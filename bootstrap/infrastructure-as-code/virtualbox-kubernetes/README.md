@@ -1,8 +1,8 @@
 # Kubernetes Cluster
-Kubernetes Infrastructure-as-Code (IaC) for the local deployment of a Kubernets (k8s) cluster.
+Kubernetes Infrastructure-as-Code (IaC) for the local deployment of a Kubernetes (k8s) cluster.
 
 ## Description
-This repostitory contains files to localy deploy a Kuernets cluster via VirtualBox, Vagrant and Ansible. It is tested on Windows 10, but also should work on other versions and operating systems that are compatible with VirtualBox and Vagrant.
+This repository contains files to locally deploy a Kubernetes cluster via VirtualBox, Vagrant and Ansible. It is tested on Windows 10, but also should work on other versions and operating systems that are compatible with VirtualBox and Vagrant.
 
 ## Architecture
 
@@ -16,11 +16,12 @@ D --> E[Kubernetes Cluster]
 
 ## Minimum System Requirements
 | Resource | Quantity  |
+|--|--|
 | vCPUs | 4 |
 | RAM | 4 GB |
 | Disk Space | 64 GB |
 
-## Latest tested Componenets
+## Latest tested Components
 
 ### Windows
 
@@ -38,13 +39,13 @@ D --> E[Kubernetes Cluster]
 
 
 ## Known issues
-| Topic | Description  | Workaround | Related Articals  |
+| Topic | Description  | Workaround | Related Articles  |
 |--|--|--|--|
 | Focal (20.04 (LTS)) missing in Ubuntu ppa | Ansible can't be installed via apt because no release file does exist. | Use pip install | [Ansible#68645](https://github.com/ansible/ansible/issues/68645) |
-| Vagrant was unable to mount VirtualBox shared folders | Mounting of shared filesystem for VM on Host OS failes.  | Use an image that is compatible with your VirtualBox version | [Vagrant#11506](https://github.com/hashicorp/vagrant/issues/11506) |
-| Gpg key for docker repo fail to fetch from key server | Failes to fetch gpg key for docker installation.  | Use "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | [Moby#20022](https://github.com/moby/moby/issues/20022) |
+| Vagrant was unable to mount VirtualBox shared folders | Mounting of shared filesystem for VM on Host OS fails.  | Use an image that is compatible with your VirtualBox version | [Vagrant#11506](https://github.com/hashicorp/vagrant/issues/11506) |
+| Gpg key for docker repo fail to fetch from key server | Fails to fetch gpg key for docker installation.  | Use "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | [Moby#20022](https://github.com/moby/moby/issues/20022) |
 | Playbook does not exist on the guest| Ansible playbook throwing 'playbook does not exist on the guest' when testing with Vagrant machine | Use 'config.vm.synced_folder ".", "/vagrant"' in vagrant file | [vm.synced_folder](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) |
-| AMD-V is not enabled in VirtualBox on AMD APU | Issue that occures with AMD CPUs and indicates that the virtualization for the CPU is not enabled | * Disable Hyper-VM <br> * Go into BIOS and enable CPU virtualization | [Askubuntu#118006](https://askubuntu.com/questions/118006/amd-v-is-not-enabled-in-virtualbox-on-amd-apu) |
+| AMD-V is not enabled in VirtualBox on AMD APU | Issue that occurs with AMD CPUs and indicates that the virtualization for the CPU is not enabled | * Disable Hyper-VM <br> * Go into BIOS and enable CPU virtualization | [Askubuntu#118006](https://askubuntu.com/questions/118006/amd-v-is-not-enabled-in-virtualbox-on-amd-apu) |
 
 
 ## Further Readings
