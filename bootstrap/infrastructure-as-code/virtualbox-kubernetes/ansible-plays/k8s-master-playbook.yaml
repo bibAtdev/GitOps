@@ -115,6 +115,7 @@
       - "cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config"
       - "chown vagrant:vagrant /home/vagrant/.kube/config"
 
+
 ## Setup the container networking provider and the network policy engine	 
   - name: Install calico pod network
     become: false
