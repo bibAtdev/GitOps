@@ -21,9 +21,34 @@ D --> E[Kubernetes Cluster]
 | RAM | 4 GB |
 | Disk Space | 64 GB |
 
-## Latest tested Components
+## How To
+1. Install Virtual Box or any other paravirtualization tool compatible with [bento/ubuntu-20.04]( https://app.vagrantup.com/bento/boxes/ubuntu-20.04 )
+2. Install Vagrant
+3. Open a shell and `cd` into this project
+```
+$ cd /path/to/Vagrantfile
+```
+4. execute `vagrant up` (this can take 15min-20min to finish)
+```
+$ vagrant up
+```
+5. connect to the Kubernetes Master node via `vagrant ssh k8s-master` and type `kubectl get nodes`. The output should look like this:
+```
+$ vagrant ssh k8s-master
+vagrant@k8s-master:~$ kubectl get nodes
+NAME           STATUS   ROLES                  AGE     VERSION
+k8s-master     Ready    control-plane,master   27m     v1.20.1
+k8s-worker-1   Ready    <none>                 7m48s   v1.20.1
+```
 
-### Windows
+
+> If you want more than one worker node and your system has the required resources, adjust the parameter `NODE_COUNT` in the `Vagrantfile` acordingly.
+
+> On Windows you can use the command-line installer [Scoop]( https://scoop.sh ) to install all the required components.
+
+ 
+
+### Latest tested Components
 
 | Component | Version  |
 |--|--|
@@ -41,20 +66,20 @@ D --> E[Kubernetes Cluster]
 ## Known issues
 | Topic | Description  | Workaround | Related Articles  |
 |--|--|--|--|
-| Focal (20.04 (LTS)) missing in Ubuntu ppa | Ansible can't be installed via apt because no release file does exist. | Use pip install | [Ansible#68645](https://github.com/ansible/ansible/issues/68645) |
-| Vagrant was unable to mount VirtualBox shared folders | Mounting of shared filesystem for VM on Host OS fails.  | Use an image that is compatible with your VirtualBox version | [Vagrant#11506](https://github.com/hashicorp/vagrant/issues/11506) |
-| Gpg key for docker repo fail to fetch from key server | Fails to fetch gpg key for docker installation.  | Use "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | [Moby#20022](https://github.com/moby/moby/issues/20022) |
-| Playbook does not exist on the guest| Ansible playbook throwing 'playbook does not exist on the guest' when testing with Vagrant machine | Use 'config.vm.synced_folder ".", "/vagrant"' in vagrant file | [vm.synced_folder](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) |
-| AMD-V is not enabled in VirtualBox on AMD APU | Issue that occurs with AMD CPUs and indicates that the virtualization for the CPU is not enabled | * Disable Hyper-VM <br> * Go into BIOS and enable CPU virtualization | [Askubuntu#118006](https://askubuntu.com/questions/118006/amd-v-is-not-enabled-in-virtualbox-on-amd-apu) |
+| Focal (20.04 (LTS)) missing in Ubuntu ppa | Ansible can't be installed via apt because no release file does exist. | Use pip install | [Ansible#68645]( https://github.com/ansible/ansible/issues/68645 ) |
+| Vagrant was unable to mount VirtualBox shared folders | Mounting of shared filesystem for VM on Host OS fails.  | Use an image that is compatible with your VirtualBox version | [Vagrant#11506]( https://github.com/hashicorp/vagrant/issues/11506 ) |
+| Gpg key for docker repo fail to fetch from key server | Fails to fetch gpg key for docker installation.  | Use "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | [Moby#20022]( https://github.com/moby/moby/issues/20022 ) |
+| Playbook does not exist on the guest| Ansible playbook throwing 'playbook does not exist on the guest' when testing with Vagrant machine | Use 'config.vm.synced_folder ".", "/vagrant"' in vagrant file | [vm.synced_folder]( https://www.vagrantup.com/docs/synced-folders/basic_usage.html ) |
+| AMD-V is not enabled in VirtualBox on AMD APU | Issue that occurs with AMD CPUs and indicates that the virtualization for the CPU is not enabled | * Disable Hyper-VM <br> * Go into BIOS and enable CPU virtualization | [Askubuntu#118006]( https://askubuntu.com/questions/118006/amd-v-is-not-enabled-in-virtualbox-on-amd-apu ) |
 
 
 ## Further Readings
-* [Kubernetes Setup Using Ansible and Vagrant](https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/)
-* [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-* [Ansible_Local](https://www.vagrantup.com/docs/provisioning/ansible_local)
-* [Vagrant Tutorial](https://learn.hashicorp.com/collections/vagrant/getting-started)
-* [Vagrant Cloud](https://app.vagrantup.com/boxes/search?order=desc&page=7&provider=virtualbox&sort=updated)
-* [Chef Bento](https://github.com/chef/bento)
+* [Kubernetes Setup Using Ansible and Vagrant]( https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/ )
+* [Install Docker Engine on Ubuntu]( https://docs.docker.com/engine/install/ubuntu/ )
+* [Ansible_Local]( https://www.vagrantup.com/docs/provisioning/ansible_local )
+* [Vagrant Tutorial]( https://learn.hashicorp.com/collections/vagrant/getting-started )
+* [Vagrant Cloud]( https://app.vagrantup.com/boxes/search?order=desc&page=7&provider=virtualbox&sort=updated )
+* [Chef Bento]( https://github.com/chef/bento )
 
 ## Key Words
 * Infrastructure-as-Code (IaC)
@@ -67,3 +92,5 @@ D --> E[Kubernetes Cluster]
 
 ## Author
 Andreas Biberacher < bibatdevelopment@gmail.com >
+
+Feel free to open discussions and pull requests :nerd_face:
