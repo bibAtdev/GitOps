@@ -1,0 +1,10 @@
+# edgemicro service name.
+- op: replace
+  path: /metadata/name
+  value: myapp-service1-service
+
+# how the selector identifies the pods
+- op: replace
+  path: /spec/selector/app
+  value: myapp-service1
+  

@@ -1,4 +1,4 @@
-# Kubernetes Cluster
+# Fux-CD for GitOps
 Kubernetes Infrastructure-as-Code (IaC) for the local deployment of a Kubernetes (k8s) cluster.
 
 ## Description
@@ -14,12 +14,20 @@ C --> D((Ansible))
 D --> E[Kubernetes Cluster]
 ```
 
-## Minimum System Requirements
+## Prerequirements
+
+### Minimum System Requirements
 | Resource | Quantity  |
 |--|--|
 | vCPUs | 4 |
 | RAM | 4 GB |
 | Disk Space | 64 GB |
+
+### Software Requirements
+| Software | Latest tested Version |
+|--|--|
+| Vagrant | 2.2.14 |
+| VirtualBox | 6.1.16 r140961 |
 
 ## How To
 1. Install Virtual Box or any other paravirtualization tool compatible with [bento/ubuntu-20.04]( https://app.vagrantup.com/bento/boxes/ubuntu-20.04 )
@@ -74,12 +82,10 @@ k8s-worker-1   Ready    <none>                 7m48s   v1.20.1
 
 
 ## Further Readings
-* [Kubernetes Setup Using Ansible and Vagrant]( https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/ )
-* [Install Docker Engine on Ubuntu]( https://docs.docker.com/engine/install/ubuntu/ )
-* [Ansible_Local]( https://www.vagrantup.com/docs/provisioning/ansible_local )
-* [Vagrant Tutorial]( https://learn.hashicorp.com/collections/vagrant/getting-started )
-* [Vagrant Cloud]( https://app.vagrantup.com/boxes/search?order=desc&page=7&provider=virtualbox&sort=updated )
-* [Chef Bento]( https://github.com/chef/bento )
+* [Terraform Registory]( https://registry.terraform.io/providers/fluxcd/flux/latest/docs  )
+* [FluxCD Terraform Provider]( https://github.com/fluxcd/terraform-provider-flux )
+* [FluxCD]( https://fluxcd.io )
+
 
 ## Key Words
 * Infrastructure-as-Code (IaC)
@@ -89,6 +95,9 @@ k8s-worker-1   Ready    <none>                 7m48s   v1.20.1
 * Ansible
 * Vagrant
 * VirtualBox
+
+## ToDo
+* Autmatically copy Kubernetes context file from k8s-master VM to Host machine. I.e. scp /etc/kubernetes/admin.conf 10.0.2.2:/C/Users/MyUser/.kube/config
 
 ## Author
 Andreas Biberacher < bibatdevelopment@gmail.com >

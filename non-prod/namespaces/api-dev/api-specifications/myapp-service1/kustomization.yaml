@@ -1,0 +1,18 @@
+# details about fields under https://github.com/kubernetes-sigs/kustomize/blob/master/docs/fields.md
+commonLabels:
+    app: myapp-service1
+
+resources:
+- ../../../../applications/api-template/
+
+
+patches:
+- path: ./patch-api-template-deployment.yaml
+  target:
+    kind: Deployment
+    name: api-template #property defined in applications/templateName under meta.name
+    
+- path: ./patch-api-template-service.yaml
+  target:
+    kind: Service
+    name: api-template-service

@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: d4u-api-template-service
+  labels:
+    app: d4u-api-name
+
+spec:
+  type: ClusterIP
+  selector:
+    app: d4u-api-name
+    
+  ports:
+    - name: tcp-80
+      targetPort: 8080
+      port: 80
+      protocol: TCP
+      
+#    - name: https
+#      targetPort: 8081
+#      port: 443
+#      nodePort: 30000
+#      protocol: TCP
+      

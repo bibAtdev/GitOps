@@ -1,0 +1,17 @@
+commonLabels:
+    tier: back-end
+    environment: development
+
+commonAnnotations:
+    owner: myapp-team
+    fluxcd.io/automated: "true" ## defines if a container image version should automatically be updated on a new release
+    ## contianer image deployment patterns      
+    fluxcd.io/tag.myapp-service1: glob:dev-*
+    
+resources:
+- ./myapp-service1
+
+configMapGenerator:
+- name: d4u-api-config
+  literals:
+  - SPRING_PROFILES_ACTIVE=dev

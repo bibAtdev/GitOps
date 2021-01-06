@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: swiss-army-knife
+  name: swiss-army-knife
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swiss-army-knife
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: swiss-army-knife
+    spec:
+      containers:
+        - command:
+            - /bin/sleep
+            - 1d
+          image: 'docker.io/leodotcloud/swiss-army-knife:v0.11'
+          imagePullPolicy: Always
+          name: swiss-army-knife
+          resources:
+            limits:
+              cpu: 100m
+              memory: 250M
+            requests:
+              cpu: 50m
+              memory: 100M
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+

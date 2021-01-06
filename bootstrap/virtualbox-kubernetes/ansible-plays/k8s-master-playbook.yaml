@@ -1,12 +1,17 @@
 ---
 - hosts: all
   become: true
-  vars:
-    kubectl_version: 1.18.6
-    docker_version: 20.10.1
   tasks:      
 
 ## Add OS utils
+  - debug:
+      msg:
+      - "The following paramets have been passed:"
+      - "node_ip: {{ node_ip }}"
+      - "docker_version: {{ docker_version }}"
+      - "kubernetes_version: {{ kubernetes_version }}"
+      - "host_sync_folder: {{ host_sync_folder }}"
+
   - name: Install packages that allow apt to be used over HTTPS
     apt:
       name: "{{ packages }}"
@@ -40,9 +45,9 @@
       update_cache: yes
     vars:
       packages:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
+      - docker-ce={{ docker_version }}
+      - docker-ce-cli={{ docker_version }}
+      - containerd.io ## version will be derived from docker-ce, latest tested version is v1.4.3 (269548fa27e0089a8b8278fc4fc781d7f65a939b)
     notify:
       - docker status
 
@@ -86,9 +91,9 @@
       update_cache: yes
     vars:
       packages:
-        - kubelet 
-        - kubeadm 
-        - kubectl
+        - kubelet={{ kubernetes_version }}
+        - kubeadm={{ kubernetes_version }}
+        - kubectl={{ kubernetes_version }}
 
   - name: Configure node ip
     lineinfile:
@@ -109,17 +114,24 @@
     
 ## Setup the kube config file for the vagrant user, so that one is able to access the Kubernetes cluster
   - name: Setup kubeconfig for vagrant user
-    command: "{{ item }}"
-    with_items:
-      - "mkdir -p /home/vagrant/.kube"
-      - "cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config"
-      - "chown vagrant:vagrant /home/vagrant/.kube/config"
+    shell: |
+      mkdir -p /home/vagrant/.kube 
+      \cp /etc/kubernetes/admin.conf /home/vagrant/.kube/config 
+      chown vagrant:vagrant /home/vagrant/.kube/config
+
+
+  - name: Copy kubeconfig to Host synced folder
+    shell: |
+      mkdir -p {{ host_sync_folder }}/.kube
+      \cp /etc/kubernetes/admin.conf {{ host_sync_folder }}/.kube/config
+      chown vagrant:vagrant {{ host_sync_folder }}/.kube/config
 
 
 ## Setup the container networking provider and the network policy engine	 
+## Ref.: https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises
   - name: Install calico pod network
     become: false
-    command: kubectl create -f https://docs.projectcalico.org/v3.14/getting-started/kubernetes/installation/hosted/calico.yaml
+    command: kubectl create -f https://docs.projectcalico.org/v3.17/manifests/calico.yaml
 
 ## Generate kube join command for joining the node to the Kubernetes cluster and store the command
   - name: Generate join command

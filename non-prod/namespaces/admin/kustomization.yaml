@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: admin
+resources:
+- ./namespace.yaml
+- ./traefik
+- ./cert-manager
+- ./swiss-army-knife
+
+bases:
+- ../../base/secrets
+- ../../base/networking/np-acme-certmanager.yaml
+- ../../base/networking/np-allow-all-namespace-internal.yaml
+- ../../base/networking/np-allow-traefik-ingress.yaml

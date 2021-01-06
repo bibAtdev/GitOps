@@ -1,0 +1,7 @@
+resources:
+- deployment.yaml
+patches:
+- target:
+    kind: Deployment
+#  path: ../../base/patch-image-pull-secret.yaml
+  path: ../../base/patch-image-pull-secret.json

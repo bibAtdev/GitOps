@@ -1,0 +1,68 @@
+# edgemicro deployment name
+- op: replace
+  path: /metadata/name
+  value: myapp-service1-deployment
+
+# how the deployment identifies the pods
+- op: replace
+  path: /spec/selector/matchLabels/app
+  value: myapp-service1 #is used by all related components. I.e. service and ingress
+  
+#container name
+- op: replace
+  path: /spec/template/spec/containers/0/name
+  value: myapp-service1
+
+#container image
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: my-container-registry/organization/image-name:tag
+
+# edgemicro credentials are stored in a namespace 
+# unique secret: edgemicro-traffic-light-credentials
+## example of replacing DEBUG "*" with DEBUG "" in the 6th entry in the env array
+## containers/0/ - only one container
+## containers/0/env/5/value - the sixt entry in env (DEBUG) in the original 
+## as documented in "gitops/non-prod/applications/edgemicro/kustomization.yaml"
+#- op: replace
+#  path: /spec/template/spec/containers/0/env/5/value
+#  value: ''
+
+## example of apending a new entry to the env array
+#- op: add
+#  path: /spec/template/spec/containers/0/env/-
+#  value: 
+#    name: NEW_NAME_1
+#    value: NEW_VALUE_1
+
+## example of apending a new entry (EDGEMICRO_KEY) to env array 
+#- op: add
+#  path: /spec/template/spec/containers/0/env/-
+#  value: 
+#    name: EDGEMICRO_KEY
+#    valueFrom:
+#      secretKeyRef:
+#        name: edgemicro-secret
+#        key: EDGEMICRO_KEY
+
+## example of adding a new volume to volumes at tht end of the array
+#- op: add
+#  path: /spec/template/spec/volumes/-
+#  value: 
+#    name: new-volume-mount
+#    configMap:
+#      secretKeyRef:
+#        name: new-edgemicro-internal-development-config-map
+
+## edgemicro use generated config map
+#- op: replace
+#  path: /spec/template/spec/volumes/0/configMap
+#  value: 
+#    name: edgemicro-config-map
+## alternative
+#- op: replace
+#  path: /spec/template/spec/volumes/0
+#  value: 
+#    name: edgemicro-config-map
+#    configMap:
+#      name: edgemicro-config-map

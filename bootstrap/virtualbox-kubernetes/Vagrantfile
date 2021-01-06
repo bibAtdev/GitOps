@@ -1,0 +1,77 @@
+## Vagrant parameters
+IMAGE_NAME = "bento/ubuntu-20.04"
+IMAGE_VERSION = "202010.24.0"
+NODE_COUNT = 1
+HOST_SYNC_FOLDER = "/vagrant"
+
+## Ansible parameters
+DOCKER_VERSION = "5:19.03.13~3-0~ubuntu-focal"
+KUBERNETES_VERSION = "1.19.6-00"
+
+## Start of VM setup
+Vagrant.configure("2") do |config|
+    config.vm.synced_folder ".", "#{HOST_SYNC_FOLDER}"
+	## Ref: https://www.vagrantup.com/docs/vagrantfile/ssh_settings
+	config.ssh.insert_key = false
+
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 2048 # minum is 2048mb
+        v.cpus = 2 # minum is 2
+		v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"] # required for windows
+    end
+	
+      
+    config.vm.define "k8s-master" do |master|
+        master.vm.box = IMAGE_NAME
+		master.vm.box_version = IMAGE_VERSION
+        master.vm.network "private_network", ip: "192.168.50.10"
+        master.vm.hostname = "k8s-master"
+        master.vm.provision "ansible_local" do |ansible|
+			ansible.install_mode = "pip"
+			ansible.version = "2.7.13"
+			ansible.extra_vars = { ansible_python_interpreter:"/usr/bin/python3" }
+			
+            ansible.playbook = "ansible-plays/k8s-master-playbook.yaml"
+            ansible.extra_vars = {
+                node_ip: "192.168.50.10",
+                docker_version: "#{DOCKER_VERSION}",
+                kubernetes_version: "#{KUBERNETES_VERSION}",
+				host_sync_folder: "#{HOST_SYNC_FOLDER}",
+            }
+        end
+    end
+
+    (1..NODE_COUNT).each do |i|
+        config.vm.define "k8s-worker-#{i}" do |node|
+			node.vm.box = IMAGE_NAME
+			node.vm.box_version = IMAGE_VERSION
+            node.vm.network "private_network", ip: "192.168.50.#{i + 10}"
+            node.vm.hostname = "k8s-worker-#{i}"
+            node.vm.provision "ansible_local" do |ansible|
+				ansible.install_mode = "pip"
+				ansible.version = "2.7.13"
+				ansible.extra_vars = { ansible_python_interpreter:"/usr/bin/python3" }
+			
+                ansible.playbook = "ansible-plays/k8s-worker-playbook.yaml"
+                ansible.extra_vars = {
+                    node_ip: "192.168.50.#{i + 10}",
+                    docker_version: "#{DOCKER_VERSION}",
+                    kubernetes_version: "#{KUBERNETES_VERSION}",
+                }
+            end
+        end
+    end
+end	
+
+	## HELPFUL BUT CURRENTLY NOT REQUIRED CODE SNIPES 	
+    ## --- For SSH setup ---
+    #config.ssh.insert_key = true
+    #config.ssh.forward_agent = true
+	#config.ssh.private_key_path =  ["~/.vagrant.d/insecure_private_key","~/.ssh/id_rsa"]
+ 	#HOST_IP = "10.0.2.2" # https://gist.github.com/lsloan/6f4307a2cab2aaa16feb323adf8d7959
+	#HOST_USER = Gem.win_platform? ? "#{ENV['USERNAME']}" : "#{ENV['USER']}"
+	#HOST_SSH_PRIVATE_KEY = File.read("#{Dir.home}/.vagrant.d/insecure_private_key")
+	#HOST_SSH_PUBLIC_KEY = "#{echo ssh-keygen -y -e -f Dir.home/.vagrant.d/insecure_private_key}" https://github.com/hashicorp/vagrant/issues/8058
+	#HOST_K8S_CONFIG_DIR = "#{Dir.home}/.kube/config"
+	#shell: rsync --rsync-path='sudo rsync' -avz -e ssh /home/vagrant/.kube/config {{ host_user }}@{{ host_ip }}:{{ host_k8s_config_dir }}
