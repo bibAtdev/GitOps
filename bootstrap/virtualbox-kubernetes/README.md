@@ -45,8 +45,8 @@ $ vagrant up
 $ vagrant ssh k8s-master
 vagrant@k8s-master:~$ kubectl get nodes
 NAME           STATUS   ROLES                  AGE     VERSION
-k8s-master     Ready    control-plane,master   27m     v1.20.1
-k8s-worker-1   Ready    <none>                 7m48s   v1.20.1
+k8s-master     Ready    control-plane,master   27m     v1.19.6
+k8s-worker-1   Ready    <none>                 7m48s   v1.19.6
 ```
 
 
@@ -60,15 +60,16 @@ k8s-worker-1   Ready    <none>                 7m48s   v1.20.1
 
 | Component | Version  |
 |--|--|
-| Windows | Windows 10 Build 19041.685 |
+| Ansible | 2.10.4 |
+| Calico| 3.17|
+| Docker |  19.03.13|
+| kubectl | v1.20.1 |
+| Kubernetes | v1.19.6 |
+| Python | 2.7.18 |
+| Ubunutu | 20.04 |
 | Vagrant | 2.2.14 |
 | VirtualBox | 6.1.16 r140961 |
-| Ubunutu | 20.04 |
-| Kubernetes | v1.20.1 |
-| kubectl | v1.20.1 |
-| Docker |  20.10.1, build 831ebea|
-| Ansible | 2.10.4 |
-| Python | 2.7.18 |
+| Windows | Windows 10 Build 19041.685 |
 
 
 ## Known issues
@@ -82,12 +83,15 @@ k8s-worker-1   Ready    <none>                 7m48s   v1.20.1
 
 
 ## Further Readings
-* [Kubernetes Setup Using Ansible and Vagrant]( https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/ )
-* [Install Docker Engine on Ubuntu]( https://docs.docker.com/engine/install/ubuntu/ )
 * [Ansible_Local]( https://www.vagrantup.com/docs/provisioning/ansible_local )
+* [Chef Bento]( https://github.com/chef/bento )
+* [Containerd.io]( https://containerd.io )
+* [Project Calico]( https://www.projectcalico.org )
+* [Install Docker Engine on Ubuntu]( https://docs.docker.com/engine/install/ubuntu/ )
+* [Kubernetes Setup Using Ansible and Vagrant]( https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/ )
 * [Vagrant Tutorial]( https://learn.hashicorp.com/collections/vagrant/getting-started )
 * [Vagrant Cloud]( https://app.vagrantup.com/boxes/search?order=desc&page=7&provider=virtualbox&sort=updated )
-* [Chef Bento]( https://github.com/chef/bento )
+
 
 ## Key Words
 * Infrastructure-as-Code (IaC)
