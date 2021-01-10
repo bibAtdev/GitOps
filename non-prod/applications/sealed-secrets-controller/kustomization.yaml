@@ -1,0 +1,13 @@
+# Ref.: https://github.com/bitnami-labs/sealed-secrets/releases/tag/v0.13.1
+# kubectl apply -f https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.13.1/controller.yaml
+resources:
+- sealed-secrets-role-keyAdmin.yaml
+- sealed-secrets-clusterRoleBinding-unsealerToController.yaml
+- sealed-secrets-clusterRole-unsealer.yaml
+- sealed-secrets-service-controller.yaml
+- sealed-secrets-roleBinding-serviceProxier.yaml
+- sealed-secrets-role-serviceProxier.yaml
+- sealed-secrets-roleBinding-controller.yaml
+- sealed-secrets-serviceAccount-controller.yaml
+- sealed-secrets-deployment-controller.yaml
+- sealed-secrets-customResourceDefinition-sealedSecrets.yaml

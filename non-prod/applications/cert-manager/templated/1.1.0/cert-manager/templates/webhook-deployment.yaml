@@ -1,0 +1,72 @@
+---
+# Source: cert-manager/templates/webhook-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cert-manager-central-webhook
+  namespace: "none"
+  labels:
+    app: webhook
+    app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: cert-manager-central
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: "webhook"
+    helm.sh/chart: cert-manager-v1.1.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: webhook
+      app.kubernetes.io/instance: cert-manager-central
+      app.kubernetes.io/component: "webhook"
+  template:
+    metadata:
+      labels:
+        app: webhook
+        app.kubernetes.io/name: webhook
+        app.kubernetes.io/instance: cert-manager-central
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: "webhook"
+        helm.sh/chart: cert-manager-v1.1.0
+    spec:
+      serviceAccountName: cert-manager-central-webhook
+      containers:
+        - name: cert-manager
+          image: "quay.io/jetstack/cert-manager-webhook:v1.1.0"
+          imagePullPolicy: IfNotPresent
+          args:
+          - --v=2
+          - --secure-port=10250
+          - --dynamic-serving-ca-secret-namespace=$(POD_NAMESPACE)
+          - --dynamic-serving-ca-secret-name=cert-manager-central-webhook-ca
+          - --dynamic-serving-dns-names=cert-manager-central-webhook,cert-manager-central-webhook.none,cert-manager-central-webhook.none.svc
+          ports:
+          - name: https
+            containerPort: 10250
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 6080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 6080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          resources:
+            {}

@@ -36,4 +36,3 @@ join-command
 terraform.tfstate*
 
 # Kuberentes artifacts
-non-prod*
