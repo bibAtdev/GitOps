@@ -1,15 +1,24 @@
-# helm fetch --repo https://edcs3chartsb.s3-edc.emea.svc.corpintra.net/repo --untar --untardir ./helm/1.86.1 traefik
-# helm template -n traefik --values kubernetes_values.yaml --output-dir ./templated/1.86.1 helm/1.86.1/traefik/
+# helm repo add traefik https://helm.traefik.io/traefik
+# helm repo update
+# helm search repo traefik/traefik --versions
+# helm pull traefik/traefik --version 9.12.1 --untar --untardir ./helm/2.3.3/
+# Adjust the ./helm-traefic-values.yaml
+# helm template --name-template=traefik-central --namespace none  --values helm-traefic-values.yaml --output-dir ./templated/2.3.6 ./helm/2.3.6/traefik/ 
+
+
+# Ref.: https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+# Ref.: https://helm.sh/docs/chart_best_practices/
+
+
 resources:
-- templated/1.86.1/traefik/templates/configmap.yaml
-- templated/1.86.1/traefik/templates/dashboard-ingress.yaml
-- templated/1.86.1/traefik/templates/dashboard-service.yaml
-- templated/1.86.1/traefik/templates/deployment.yaml
-- templated/1.86.1/traefik/templates/networkpolicy.yaml
-- templated/1.86.1/traefik/templates/rbac.yaml
-- templated/1.86.1/traefik/templates/service.yaml
-- templated/1.86.1/traefik/templates/default-cert-secret.yaml
-patches:
-- target:
-    kind: Deployment
-  path: ../../base/patch-image-pull-secret.json
+#- templated/2.3.6/traefik/templates/dashboard-hook-ingressroute.yaml
+- templated/2.3.6/traefik/templates/deployment.yaml
+- templated/2.3.6/traefik/templates/service.yaml
+- templated/2.3.6/traefik/templates/rbac/clusterrole.yaml
+- templated/2.3.6/traefik/templates/rbac/clusterrolebinding.yaml
+- templated/2.3.6/traefik/templates/rbac/serviceaccount.yaml
+
+#patches:
+#- target:
+#    kind: Deployment
+#  path: ../../base/patch-image-pull-secret.json

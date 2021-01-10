@@ -3,9 +3,10 @@ kind: Kustomization
 namespace: admin
 resources:
 - ./namespace.yaml
+- ./sealed-secrets-controller
 - ./traefik
 - ./cert-manager
-- ./swiss-army-knife
+#- ./swiss-army-knife
 
 bases:
 - ../../base/secrets
