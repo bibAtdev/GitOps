@@ -1,0 +1,20 @@
+---
+# Source: sealed-secrets/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sealed-secrets-controller-central
+  namespace: none
+  labels:
+    app.kubernetes.io/name: sealed-secrets
+    helm.sh/chart: sealed-secrets-1.13.2
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: sealed-secrets-controller-central
+    app.kubernetes.io/version: 0.13.1
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: sealed-secrets
+  type: ClusterIP
