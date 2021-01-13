@@ -1,5 +1,3 @@
-## Ref.: https://github.com/fluxcd/terraform-provider-flux/blob/main/examples/github/main.tf
-
 terraform {
   required_version = ">= 0.13"
 
@@ -18,7 +16,7 @@ terraform {
     }
     flux = {
       source  = "fluxcd/flux"
-      version = ">= 0.0.1"
+      version = ">= 0.0.9"
     }
   }
 }
@@ -106,40 +104,51 @@ resource "kubernetes_secret" "main" {
 }
 
 # GitHub
-resource "github_repository" "main" {
-  name       = var.repository_name
-  visibility = var.repository_visibility
-  auto_init  = true
+## https://stackoverflow.com/questions/57908294/optional-resources-in-terraform-0-12-module
+#resource "github_repository" "main" {
+#  name       = var.repository_name
+#  visibility = var.repository_visibility
+#  auto_init  = true
+#}
+
+#resource "github_branch_default" "main" {
+#  repository = github_repository.main.name
+#  branch     = var.branch
+#}
+
+
+data "github_repository" "main" {
+  name = var.repository_name
 }
 
-resource "github_branch_default" "main" {
-  repository = github_repository.main.name
+data "github_branch" "main" {
+  repository = data.github_repository.main.name
   branch     = var.branch
 }
 
 resource "github_repository_deploy_key" "main" {
   title      = "staging-cluster"
-  repository = github_repository.main.name
+  repository = data.github_repository.main.name
   key        = tls_private_key.main.public_key_openssh
   read_only  = true
 }
 
 resource "github_repository_file" "install" {
-  repository = github_repository.main.name
+  repository = data.github_repository.main.name
   file       = data.flux_install.main.path
   content    = data.flux_install.main.content
   branch     = var.branch
 }
 
 resource "github_repository_file" "sync" {
-  repository = github_repository.main.name
+  repository = data.github_repository.main.name
   file       = data.flux_sync.main.path
   content    = data.flux_sync.main.content
   branch     = var.branch
 }
 
 resource "github_repository_file" "kustomize" {
-  repository = github_repository.main.name
+  repository = data.github_repository.main.name
   file       = data.flux_sync.main.kustomize_path
   content    = data.flux_sync.main.kustomize_content
   branch     = var.branch

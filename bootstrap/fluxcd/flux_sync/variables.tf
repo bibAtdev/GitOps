@@ -27,10 +27,10 @@ variable "repository_visibility" {
 
 variable "branch" {
   type    = string
-  default = "master"
+  default = "main"
 }
 
 variable "target_path" {
   type    = string
-  default = "non-prod"
+  default = "non-prod/namespaces"
 }

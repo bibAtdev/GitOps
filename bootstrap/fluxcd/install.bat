@@ -15,7 +15,5 @@ cd %~dp0 ^
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 REM Linking Flux CD to a Git repository
-
-
-REM terraform init %~dp0flux_sync && terraform apply -auto-approve flux_sync && echo "INFO: Linking of Flux CD to Git repository was successful."
+terraform init %~dp0flux_sync && terraform apply -auto-approve flux_sync && echo "INFO: Linking of Flux CD to Git repository was successful."
 if %errorlevel% neq 0 exit /b %errorlevel%
