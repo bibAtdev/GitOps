@@ -1,0 +1,7 @@
+
+resources:
+- ../templated/7.10.1/filebeat/templates/serviceaccount.yaml
+- ../templated/7.10.1/filebeat/templates/configmap.yaml
+- ../templated/7.10.1/filebeat/templates/clusterrole.yaml
+- ../templated/7.10.1/filebeat/templates/clusterrolebinding.yaml
+- ../templated/7.10.1/filebeat/templates/daemonset.yaml

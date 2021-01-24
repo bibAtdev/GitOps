@@ -1,0 +1,15 @@
+---
+# Source: logstash/templates/configmap-pipeline.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-central-logstash-pipeline
+  labels:
+    app: "logstash-central-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "logstash-central"
+data:
+  uptime.conf: |
+    input { exec { command => "uptime" interval => 30 } }
+    output { elasticsearch { hosts => ["http://elasticsearch-master:9200"] index => "logstash" } }

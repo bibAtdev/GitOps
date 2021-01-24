@@ -1,0 +1,22 @@
+---
+# Source: filebeat/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: filebeat-central-filebeat-cluster-role
+  labels:
+    app: "filebeat-central-filebeat"
+    chart: "filebeat-7.10.1"
+    heritage: "Helm"
+    release: "filebeat-central"
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - nodes
+  - pods
+  verbs:
+  - get
+  - list
+  - watch

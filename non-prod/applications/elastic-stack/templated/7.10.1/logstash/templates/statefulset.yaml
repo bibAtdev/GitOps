@@ -1,0 +1,113 @@
+---
+# Source: logstash/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: logstash-central-logstash
+  labels:
+    app: "logstash-central-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "logstash-central"
+spec:
+  serviceName: logstash-central-logstash-headless
+  selector:
+    matchLabels:
+      app: "logstash-central-logstash"
+      release: "logstash-central"
+  replicas: 1
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - metadata:
+      name: logstash-central-logstash
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+  template:
+    metadata:
+      name: "logstash-central-logstash"
+      labels:
+        app: "logstash-central-logstash"
+        chart: "logstash"
+        heritage: "Helm"
+        release: "logstash-central"
+      annotations:
+        configchecksum: aa6d471f3abc095f23f41ad5bdf2752dcfedc5c29f4521864c20dc25b780a41
+        pipelinechecksum: 6c9be5865ce2afb47933fc0a544bf28ba691909ef4472838b2e686e1d2cd4b1
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - "logstash-central-logstash"
+            topologyKey: kubernetes.io/hostname
+      terminationGracePeriodSeconds: 120
+      volumes:
+        - name: logstashconfig
+          configMap:
+            name: logstash-central-logstash-config
+        - name: logstashpipeline
+          configMap:
+            name: logstash-central-logstash-pipeline
+      containers:
+      - name: "logstash"
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+        image: "docker.elastic.co/logstash/logstash-oss:7.10.1"
+        imagePullPolicy: "IfNotPresent"
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 300
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 3
+          timeoutSeconds: 5
+        ports:
+        - name: http
+          containerPort: 9600
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1536Mi
+          requests:
+            cpu: 100m
+            memory: 1536Mi
+        env:
+          - name: LS_JAVA_OPTS
+            value: "-Xmx1g -Xms1g"
+        volumeMounts:
+          - name: "logstash-central-logstash"
+            mountPath: /usr/share/logstash/data
+          - name: logstashconfig
+            mountPath: /usr/share/logstash/config/logstash.yml
+            subPath: logstash.yml
+          - name: logstashpipeline
+            mountPath: /usr/share/logstash/pipeline/uptime.conf
+            subPath: uptime.conf

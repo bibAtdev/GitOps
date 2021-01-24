@@ -1,0 +1,8 @@
+
+resources:
+- ../templated/7.10.1/apm-server/templates/serviceaccount.yaml
+- ../templated/7.10.1/apm-server/templates/configmap.yaml
+- ../templated/7.10.1/apm-server/templates/clusterrole.yaml
+- ../templated/7.10.1/apm-server/templates/clusterrolebinding.yaml
+- ../templated/7.10.1/apm-server/templates/service.yaml
+- ../templated/7.10.1/apm-server/templates/deployment.yaml

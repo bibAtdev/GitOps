@@ -1,0 +1,7 @@
+
+resources:
+- ../templated/7.10.1/logstash/templates/poddisruptionbudget.yaml
+- ../templated/7.10.1/logstash/templates/configmap-config.yaml
+- ../templated/7.10.1/logstash/templates/configmap-pipeline.yaml
+- ../templated/7.10.1/logstash/templates/service-headless.yaml
+- ../templated/7.10.1/logstash/templates/statefulset.yaml

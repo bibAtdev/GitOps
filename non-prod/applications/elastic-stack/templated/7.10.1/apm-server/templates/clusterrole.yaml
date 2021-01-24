@@ -1,0 +1,21 @@
+---
+# Source: apm-server/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: apm-server-central-apm-server-cluster-role
+  labels:
+    app: "apm-server-central-apm-server"
+    chart: "apm-server-7.10.1"
+    heritage: "Helm"
+    release: "apm-server-central"
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - pods
+  verbs:
+  - get
+  - list
+  - watch

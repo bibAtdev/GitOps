@@ -1,0 +1,15 @@
+---
+# Source: logstash/templates/configmap-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-central-logstash-config
+  labels:
+    app: "logstash-central-logstash"
+    chart: "logstash"
+    heritage: "Helm"
+    release: "logstash-central"
+data:
+  logstash.yml: |
+    http.host: 0.0.0.0
+    xpack.monitoring.enabled: false

@@ -3,10 +3,13 @@ IMAGE_NAME = "bento/ubuntu-20.04"
 IMAGE_VERSION = "202010.24.0"
 NODE_COUNT = 1
 HOST_SYNC_FOLDER = "/vagrant"
+ANSIBLE_VERSION="2.7.13"
+ANSIBLE_INSTALL_CMD="curl https://bootstrap.pypa.io/3.4/get-pip.py | sudo python - 'pip==19.3.1'"
 
 ## Ansible parameters
 DOCKER_VERSION = "5:19.03.13~3-0~ubuntu-focal"
 KUBERNETES_VERSION = "1.19.6-00"
+
 
 ## Start of VM setup
 Vagrant.configure("2") do |config|
@@ -29,7 +32,8 @@ Vagrant.configure("2") do |config|
         master.vm.hostname = "k8s-master"
         master.vm.provision "ansible_local" do |ansible|
 			ansible.install_mode = "pip"
-			ansible.version = "2.7.13"
+			ansible.pip_install_cmd = "#{ANSIBLE_INSTALL_CMD}"
+			ansible.version = "#{ANSIBLE_VERSION}"
 			ansible.extra_vars = { ansible_python_interpreter:"/usr/bin/python3" }
 			
             ansible.playbook = "ansible-plays/k8s-master-playbook.yaml"
@@ -50,7 +54,8 @@ Vagrant.configure("2") do |config|
             node.vm.hostname = "k8s-worker-#{i}"
             node.vm.provision "ansible_local" do |ansible|
 				ansible.install_mode = "pip"
-				ansible.version = "2.7.13"
+				ansible.pip_install_cmd = "#{ANSIBLE_INSTALL_CMD}"
+				ansible.version = "#{ANSIBLE_VERSION}"
 				ansible.extra_vars = { ansible_python_interpreter:"/usr/bin/python3" }
 			
                 ansible.playbook = "ansible-plays/k8s-worker-playbook.yaml"

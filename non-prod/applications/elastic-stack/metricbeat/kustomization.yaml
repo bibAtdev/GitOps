@@ -1,0 +1,8 @@
+
+resources:
+- ../templated/7.10.1/metricbeat/templates/serviceaccount.yaml
+- ../templated/7.10.1/metricbeat/templates/configmap.yaml
+- ../templated/7.10.1/metricbeat/templates/clusterrole.yaml
+- ../templated/7.10.1/metricbeat/templates/clusterrolebinding.yaml
+- ../templated/7.10.1/metricbeat/templates/daemonset.yaml
+- ../templated/7.10.1/metricbeat/templates/deployment.yaml

@@ -1,0 +1,29 @@
+# Helm repo add elastic https://Helm.elastic.co
+# helm repo update
+
+# <artifact name>:
+# - apm-server
+# - elasticsearch
+# - filebeat
+# - kibana
+# - logstash
+# - metricbeat
+
+# helm search repo elastic/<artifact name> --versions
+# helm pull elastic/<artifact name> --version 7.10.1 --untar --untardir ./helm/7.10.1/
+# Adjust the ./helm/7.10.1/helm-<artifact name>-values.yaml
+# helm template --name-template=<artifact name>-central --namespace none  --values ./helm/7.10.1/helm-<artifact name>-values.yaml --output-dir ./templated/7.10.1/ ./helm/7.10.1/<artifact name>/
+
+
+# Ref.: https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+# Ref.: https://helm.sh/docs/chart_best_practices/
+
+
+
+resources:
+- apm-server
+- elasticsearch
+- filebeat
+- kibana
+- logstash
+- metricbeat

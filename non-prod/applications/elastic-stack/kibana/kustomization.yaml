@@ -1,0 +1,4 @@
+
+resources:
+- ../templated/7.10.1/kibana/templates/service.yaml
+- ../templated/7.10.1/kibana/templates/deployment.yaml

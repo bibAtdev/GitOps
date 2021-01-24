@@ -1,0 +1,20 @@
+---
+# Source: apm-server/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: apm-server-central-apm-server
+  labels:
+    app: apm-server
+    release: "apm-server-central"
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8200
+      protocol: TCP
+      name: http
+      targetPort: 8200
+  selector:
+    app: apm-server
+    release: "apm-server-central"

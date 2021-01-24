@@ -1,0 +1,70 @@
+---
+# Source: apm-server/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apm-server-central-apm-server
+  labels:
+    app: apm-server
+    release: "apm-server-central"
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: apm-server
+      release: "apm-server-central"
+  template:
+    metadata:
+      labels:
+        app: apm-server
+        release: "apm-server-central"
+      annotations:
+        
+        configChecksum: 9932b2fde7e42ef22bff08851227a17afca3cad2e0f7e053507374cf7ab5bcb
+    spec:
+      serviceAccountName: apm-server-central-apm-server
+      volumes:
+        - name: apm-server-config
+          configMap:
+            name: apm-server-central-apm-server-config
+            defaultMode: 0600
+      containers:
+      - name: apm-server
+        image: "docker.elastic.co/apm/apm-server-oss:7.10.1"
+        imagePullPolicy: "IfNotPresent"
+        securityContext:
+          privileged: false
+          runAsUser: 0
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        ports:
+          - containerPort: 8200
+            name: http
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+          - name: apm-server-config
+            mountPath: /usr/share/apm-server/apm-server.yml
+            subPath: apm-server.yml
+            readOnly: true

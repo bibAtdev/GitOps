@@ -1,0 +1,24 @@
+---
+# Source: elasticsearch/templates/test/test-elasticsearch-health.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "elasticsearch-central-xtlxz-test"
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  securityContext:
+    fsGroup: 1000
+    runAsUser: 1000
+  containers:
+  - name: "elasticsearch-central-owgcq-test"
+    image: "docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.1"
+    imagePullPolicy: "IfNotPresent"
+    command:
+      - "sh"
+      - "-c"
+      - |
+        #!/usr/bin/env bash -e
+        curl -XGET --fail 'elasticsearch-master:9200/_cluster/health?wait_for_status=green&timeout=1s'
+  restartPolicy: Never
