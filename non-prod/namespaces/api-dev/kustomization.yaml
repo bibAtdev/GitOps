@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: api-dev
 resources:
-- ./api-specifications
+#- ./api-specifications
 - ./namespace.yaml
 bases:
 - ../../base/secrets

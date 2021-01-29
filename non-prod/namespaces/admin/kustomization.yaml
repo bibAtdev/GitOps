@@ -5,7 +5,7 @@ resources:
 - ./namespace.yaml
 - ./sealed-secrets-controller
 - ./traefik
-- ./cert-manager
+#- ./cert-manager
 #- ./swiss-army-knife
 
 bases:
