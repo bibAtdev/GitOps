@@ -1,0 +1,41 @@
+## Ref.: https://github.com/geerlingguy/ansible-role-nfs
+## Ref.: https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-20-04
+
+---
+- hosts: localhost
+  vars: #default values for testing
+    nfs_client_mount: "/mnt"
+    nfs_server_ip: "192.168.50.10"
+    nfs_server_directory: "/srv/nfs/kubedata"
+  become: true
+  tasks:      
+
+## Add OS utils
+  - debug:
+      msg:
+      - "The following paramets have been passed:"
+      - "nfs_client_mount: {{ nfs_client_mount }}"
+      - "nfs_server_ip: {{ nfs_server_ip }}"
+      - "nfs_server_directory: {{ nfs_server_directory }}"
+      
+  - name: install nfs utilities
+    apt:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+      - nfs-common      
+
+  - name: Test mount of NFS volume
+    mount:
+      src: "{{ nfs_server_ip }}:{{ nfs_server_directory }}"
+      path: "{{ nfs_client_mount }}"
+      opts: defaults
+      state: mounted
+      fstype: nfs
+    
+  - name: Unmount mounted volume
+    mount:
+      path: "{{ nfs_client_mount }}"
+      state: unmounted 

@@ -1,0 +1,55 @@
+## Ref.: https://github.com/geerlingguy/ansible-role-nfs
+## Ref.: https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-20-04
+
+---
+- hosts: all
+  vars: #default values for testing
+    nfs_server_ip: "192.168.50.10"
+    nfs_server_directory: "/srv/nfs/kubedata"
+      
+  become: true
+  tasks:      
+
+  - debug:
+      msg:
+      - "The following paramets have been passed:"
+      - "nfs_server_directory: {{ nfs_server_directory }}"
+      
+        
+  - name: Install nfs-kernel-server for Ubuntu
+    apt:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+      - nfs-kernel-server   
+      
+## 
+  - name: create a nfs directory
+    shell: |
+      mkdir -p {{ nfs_server_directory }}
+      chown nobody:nogroup {{ nfs_server_directory }}
+      
+
+  - name: Check that the somefile.conf exists
+    stat:
+       path: /etc/exports
+    register: stat_result
+
+  - name: Creating an empty file
+    file:
+      path: "/etc/exports"
+      state: touch
+    when: stat_result.stat.exists == False
+
+  - name: Create entry for shared directory
+    lineinfile:
+      path: "/etc/exports"
+      regexp: "^{{ nfs_server_directory | replace('/','\/') }}"
+      line: "{{ nfs_server_directory }} *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)"
+      
+  - name: Restart nfs server
+    service:
+      name: nfs-kernel-server
+      state: restarted

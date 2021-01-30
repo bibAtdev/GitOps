@@ -36,3 +36,4 @@ join-command
 terraform.tfstate*
 
 # Kuberentes artifacts
+*.retry

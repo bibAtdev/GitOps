@@ -74,6 +74,7 @@ resources:
 
 volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]
+  storageClassName: "local-storage-class"
   resources:
     requests:
       storage: 1Gi
