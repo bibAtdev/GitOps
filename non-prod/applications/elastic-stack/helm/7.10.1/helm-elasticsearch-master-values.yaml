@@ -15,8 +15,8 @@ roles:
   remote_cluster_client: "false"
 # ml: "true" # ml is not availble with elasticsearch-oss
 
-replicas: 3
-minimumMasterNodes: 2
+replicas: 1
+minimumMasterNodes: 1
 
 esMajorVersion: ""
 

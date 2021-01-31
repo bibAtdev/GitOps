@@ -16,7 +16,7 @@ spec:
   selector:
     matchLabels:
       app: "elasticsearch-data"
-  replicas: 3
+  replicas: 2
   podManagementPolicy: Parallel
   updateStrategy:
     type: RollingUpdate
