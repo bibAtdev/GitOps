@@ -3,40 +3,39 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: non-prod-master
+  name: elasticsearch-data
   labels:
     heritage: "Helm"
     release: "central"
     chart: "elasticsearch"
-    app: "non-prod-master"
+    app: "elasticsearch-data"
   annotations:
     esMajorVersion: "7"
 spec:
-  serviceName: non-prod-master-headless
+  serviceName: elasticsearch-data-headless
   selector:
     matchLabels:
-      app: "non-prod-master"
-  replicas: 3
+      app: "elasticsearch-data"
+  replicas: 2
   podManagementPolicy: Parallel
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
   - metadata:
-      name: non-prod-master
+      name: elasticsearch-data
     spec:
       accessModes:
       - ReadWriteOnce
       resources:
         requests:
           storage: 1Gi
-      storageClassName: managed-nfs-storage-class
   template:
     metadata:
-      name: "non-prod-master"
+      name: "elasticsearch-data"
       labels:
         release: "central"
         chart: "elasticsearch"
-        app: "non-prod-master"
+        app: "elasticsearch-data"
       annotations:
         
     spec:
@@ -51,7 +50,7 @@ spec:
               - key: app
                 operator: In
                 values:
-                - "non-prod-master"
+                - "elasticsearch-data"
             topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 120
       volumes:
@@ -158,12 +157,10 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
-          - name: cluster.initial_master_nodes
-            value: "non-prod-master-0,non-prod-master-1,non-prod-master-2,"
           - name: discovery.seed_hosts
-            value: "non-prod-master-headless"
+            value: "elasticsearch-master-headless"
           - name: cluster.name
-            value: "non-prod"
+            value: "elasticsearch"
           - name: network.host
             value: "0.0.0.0"
           - name: ES_JAVA_OPTS
@@ -173,9 +170,9 @@ spec:
           - name: node.ingest
             value: "true"
           - name: node.master
-            value: "true"
+            value: "false"
           - name: node.remote_cluster_client
             value: "true"
         volumeMounts:
-          - name: "non-prod-master"
+          - name: "elasticsearch-data"
             mountPath: /usr/share/elasticsearch/data

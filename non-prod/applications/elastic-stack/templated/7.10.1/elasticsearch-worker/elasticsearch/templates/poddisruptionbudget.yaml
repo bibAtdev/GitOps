@@ -3,9 +3,9 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: "non-prod-master-pdb"
+  name: "elasticsearch-data-pdb"
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app: "non-prod-master"
+      app: "elasticsearch-data"

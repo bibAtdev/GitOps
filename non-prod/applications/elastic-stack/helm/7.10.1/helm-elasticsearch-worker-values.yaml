@@ -1,22 +1,22 @@
 ---
-clusterName: "non-prod"
-nodeGroup: "master"
+clusterName: "elasticsearch"
+nodeGroup: "data"
 
 # The service that non master groups will try to connect to when joining the cluster
 # This should be set to clusterName + "-" + nodeGroup for your master group
-masterService: ""
+masterService: "elasticsearch-master"
 
 # Elasticsearch roles that will be applied to this nodeGroup
 # These will be set as environment variables. E.g. node.master=true
 roles:
-  master: "true"
+  master: "false"
   ingest: "true"
   data: "true"
   remote_cluster_client: "true"
 # ml: "true" # ml is not availble with elasticsearch-oss
 
-replicas: 3
-minimumMasterNodes: 2
+replicas: 2
+minimumMasterNodes: 1
 
 esMajorVersion: ""
 
@@ -92,7 +92,6 @@ networkHost: "0.0.0.0"
 
 volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]
-  storageClassName: "managed-nfs-storage-class"
   resources:
     requests:
       storage: 1Gi

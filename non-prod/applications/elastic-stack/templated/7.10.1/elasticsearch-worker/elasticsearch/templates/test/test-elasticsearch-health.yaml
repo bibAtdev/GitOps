@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "central-ckrii-test"
+  name: "central-wqjgd-test"
   annotations:
     "helm.sh/hook": test
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -12,7 +12,7 @@ spec:
     fsGroup: 1000
     runAsUser: 1000
   containers:
-  - name: "central-twwks-test"
+  - name: "central-mujri-test"
     image: "docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.1"
     imagePullPolicy: "IfNotPresent"
     command:
@@ -20,5 +20,5 @@ spec:
       - "-c"
       - |
         #!/usr/bin/env bash -e
-        curl -XGET --fail 'non-prod-master:9200/_cluster/health?wait_for_status=green&timeout=1s'
+        curl -XGET --fail 'elasticsearch-data:9200/_cluster/health?wait_for_status=green&timeout=1s'
   restartPolicy: Never

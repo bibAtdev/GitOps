@@ -1,5 +1,8 @@
 
 resources:
-- ../templated/7.10.1/elasticsearch/templates/poddisruptionbudget.yaml
-- ../templated/7.10.1/elasticsearch/templates/service.yaml
-- ../templated/7.10.1/elasticsearch/templates/statefulset.yaml
+- ../templated/7.10.1/elasticsearch-master/elasticsearch/templates/poddisruptionbudget.yaml
+- ../templated/7.10.1/elasticsearch-master/elasticsearch/templates/service.yaml
+- ../templated/7.10.1/elasticsearch-master/elasticsearch/templates/statefulset.yaml
+- ../templated/7.10.1/elasticsearch-worker/elasticsearch/templates/poddisruptionbudget.yaml
+- ../templated/7.10.1/elasticsearch-worker/elasticsearch/templates/service.yaml
+- ../templated/7.10.1/elasticsearch-worker/elasticsearch/templates/statefulset.yaml

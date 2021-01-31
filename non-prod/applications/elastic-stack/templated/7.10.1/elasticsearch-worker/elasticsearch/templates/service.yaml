@@ -3,12 +3,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: non-prod-master
+  name: elasticsearch-data
   labels:
     heritage: "Helm"
     release: "central"
     chart: "elasticsearch"
-    app: "non-prod-master"
+    app: "elasticsearch-data"
   annotations:
     {}
 spec:
@@ -16,7 +16,7 @@ spec:
   selector:
     release: "central"
     chart: "elasticsearch"
-    app: "non-prod-master"
+    app: "elasticsearch-data"
   ports:
   - name: http
     protocol: TCP
@@ -29,12 +29,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: non-prod-master-headless
+  name: elasticsearch-data-headless
   labels:
     heritage: "Helm"
     release: "central"
     chart: "elasticsearch"
-    app: "non-prod-master"
+    app: "elasticsearch-data"
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
@@ -42,7 +42,7 @@ spec:
   # Create endpoints also if the related pod isn't ready
   publishNotReadyAddresses: true
   selector:
-    app: "non-prod-master"
+    app: "elasticsearch-data"
   ports:
   - name: http
     port: 9200
