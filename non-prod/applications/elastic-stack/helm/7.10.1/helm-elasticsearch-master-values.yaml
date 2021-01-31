@@ -11,12 +11,12 @@ masterService: "elasticsearch-master"
 roles:
   master: "true"
   ingest: "true"
-  data: "true"
-  remote_cluster_client: "true"
+  data: "false"
+  remote_cluster_client: "false"
 # ml: "true" # ml is not availble with elasticsearch-oss
 
-replicas: 1
-minimumMasterNodes: 1
+replicas: 3
+minimumMasterNodes: 2
 
 esMajorVersion: ""
 

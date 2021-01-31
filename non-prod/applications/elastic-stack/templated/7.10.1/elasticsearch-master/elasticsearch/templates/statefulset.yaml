@@ -16,7 +16,7 @@ spec:
   selector:
     matchLabels:
       app: "elasticsearch-master"
-  replicas: 1
+  replicas: 3
   podManagementPolicy: Parallel
   updateStrategy:
     type: RollingUpdate
@@ -158,7 +158,7 @@ spec:
               fieldRef:
                 fieldPath: metadata.name
           - name: cluster.initial_master_nodes
-            value: "elasticsearch-master-0,"
+            value: "elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2,"
           - name: discovery.seed_hosts
             value: "elasticsearch-master-headless"
           - name: cluster.name
@@ -168,13 +168,13 @@ spec:
           - name: ES_JAVA_OPTS
             value: "-Xmx128m -Xms128m"
           - name: node.data
-            value: "true"
+            value: "false"
           - name: node.ingest
             value: "true"
           - name: node.master
             value: "true"
           - name: node.remote_cluster_client
-            value: "true"
+            value: "false"
         volumeMounts:
           - name: "elasticsearch-master"
             mountPath: /usr/share/elasticsearch/data
