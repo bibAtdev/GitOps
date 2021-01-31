@@ -29,7 +29,7 @@ spec:
       resources:
         requests:
           storage: 1Gi
-      storageClassName: local-storage-class
+      storageClassName: managed-nfs-storage-class
   template:
     metadata:
       name: "elasticsearch-master"

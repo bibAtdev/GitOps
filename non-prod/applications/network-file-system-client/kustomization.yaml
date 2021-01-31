@@ -1,0 +1,10 @@
+# Ref.: https://blog.exxactcorp.com/deploying-dynamic-nfs-provisioning-in-kubernetes/
+
+resources:
+- managed-nfs-storage-class.yaml
+- deployment.yaml
+- rbac/cluster-role.yaml
+- rbac/cluster-role-binding.yaml
+- rbac/role.yaml
+- rbac/role-binding.yaml
+- rbac/service-account.yaml

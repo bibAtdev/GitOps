@@ -2,7 +2,7 @@
 ## Ref.: https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-20-04
 
 ---
-- hosts: localhost
+- hosts: all
   vars: #default values for testing
     nfs_client_mount: "/mnt"
     nfs_server_ip: "192.168.50.10"

@@ -73,7 +73,7 @@ Vagrant.configure("2") do |config|
                     docker_version: "#{DOCKER_VERSION}",
                     kubernetes_version: "#{KUBERNETES_VERSION}",
                 }
-				#install NFS server
+				#install NFS client
 				ansible.playbook = "ansible-plays/nfs-client-playbook.yaml"
 				ansible.extra_vars = {
 					nfs_server_ip: "192.168.50.10",

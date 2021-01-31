@@ -5,8 +5,10 @@ resources:
 - ./namespace.yaml
 - ./sealed-secrets-controller
 - ./traefik
+- ./network-file-system-client
 #- ./cert-manager
 #- ./swiss-army-knife
+
 
 bases:
 - ../../base/secrets
