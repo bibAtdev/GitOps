@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: metricbeat-central-metricbeat-daemonset-config
+  name: central-metricbeat-daemonset-config
   labels:
-    app: "metricbeat-central-metricbeat"
+    app: "central-metricbeat"
     chart: "metricbeat-7.10.1"
     heritage: "Helm"
-    release: "metricbeat-central"
+    release: "central"
 data:
   metricbeat.yml: |
     metricbeat.modules:
@@ -62,12 +62,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: metricbeat-central-metricbeat-deployment-config
+  name: central-metricbeat-deployment-config
   labels:
-    app: "metricbeat-central-metricbeat"
+    app: "central-metricbeat"
     chart: "metricbeat-7.10.1"
     heritage: "Helm"
-    release: "metricbeat-central"
+    release: "central"
 data:
   metricbeat.yml: |
     metricbeat.modules:

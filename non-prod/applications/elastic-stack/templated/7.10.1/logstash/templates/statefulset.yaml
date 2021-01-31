@@ -3,42 +3,43 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: logstash-central-logstash
+  name: central-logstash
   labels:
-    app: "logstash-central-logstash"
+    app: "central-logstash"
     chart: "logstash"
     heritage: "Helm"
-    release: "logstash-central"
+    release: "central"
 spec:
-  serviceName: logstash-central-logstash-headless
+  serviceName: central-logstash-headless
   selector:
     matchLabels:
-      app: "logstash-central-logstash"
-      release: "logstash-central"
+      app: "central-logstash"
+      release: "central"
   replicas: 1
   podManagementPolicy: Parallel
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
   - metadata:
-      name: logstash-central-logstash
+      name: central-logstash
     spec:
       accessModes:
       - ReadWriteOnce
       resources:
         requests:
           storage: 1Gi
+      storageClassName: local-storage-class
   template:
     metadata:
-      name: "logstash-central-logstash"
+      name: "central-logstash"
       labels:
-        app: "logstash-central-logstash"
+        app: "central-logstash"
         chart: "logstash"
         heritage: "Helm"
-        release: "logstash-central"
+        release: "central"
       annotations:
-        configchecksum: aa6d471f3abc095f23f41ad5bdf2752dcfedc5c29f4521864c20dc25b780a41
-        pipelinechecksum: 6c9be5865ce2afb47933fc0a544bf28ba691909ef4472838b2e686e1d2cd4b1
+        configchecksum: 955238aff6bfd3a0f817fa834e34cc8bb81136d09c1d32b38d22ade6a98891e
+        pipelinechecksum: 42731beed61febbae57f39fc841d32817ef45879278b300a2192ef2be447116
     spec:
       securityContext:
         fsGroup: 1000
@@ -51,16 +52,16 @@ spec:
               - key: app
                 operator: In
                 values:
-                - "logstash-central-logstash"
+                - "central-logstash"
             topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 120
       volumes:
         - name: logstashconfig
           configMap:
-            name: logstash-central-logstash-config
+            name: central-logstash-config
         - name: logstashpipeline
           configMap:
-            name: logstash-central-logstash-pipeline
+            name: central-logstash-pipeline
       containers:
       - name: "logstash"
         securityContext:
@@ -103,7 +104,7 @@ spec:
           - name: LS_JAVA_OPTS
             value: "-Xmx1g -Xms1g"
         volumeMounts:
-          - name: "logstash-central-logstash"
+          - name: "central-logstash"
             mountPath: /usr/share/logstash/data
           - name: logstashconfig
             mountPath: /usr/share/logstash/config/logstash.yml

@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: kibana-central-kibana
+  name: central-kibana
   labels: 
     app: kibana
-    release: "kibana-central"
+    release: "central"
     heritage: Helm
 spec:
   type: ClusterIP
@@ -17,4 +17,4 @@ spec:
       targetPort: 5601
   selector:
     app: kibana
-    release: "kibana-central"
+    release: "central"

@@ -3,27 +3,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 'metricbeat-central-metricbeat-metrics'
+  name: 'central-metricbeat-metrics'
   labels:
-    app: 'metricbeat-central-metricbeat-metrics'
+    app: 'central-metricbeat-metrics'
     chart: 'metricbeat-7.10.1'
     heritage: 'Helm'
-    release: 'metricbeat-central'
+    release: 'central'
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: 'metricbeat-central-metricbeat-metrics'
-      release: 'metricbeat-central'
+      app: 'central-metricbeat-metrics'
+      release: 'central'
   template:
     metadata:
       annotations:
         
-        configChecksum: b4b1671e5fff9eb9ed4775525fab9a83baca3589c5ee7f426c97e998749436a
+        configChecksum: 2a01772cfac87024f31bd14387c2b5dfb2c30c0ad3730c8b49583a48e52f08d
       labels:
-        app: 'metricbeat-central-metricbeat-metrics'
+        app: 'central-metricbeat-metrics'
         chart: 'metricbeat-7.10.1'
-        release: 'metricbeat-central'
+        release: 'central'
     spec:
       affinity: 
         {}
@@ -31,13 +31,13 @@ spec:
         {}
       tolerations: 
         []
-      serviceAccountName: metricbeat-central-metricbeat
+      serviceAccountName: central-metricbeat
       terminationGracePeriodSeconds: 30
       volumes:
       - name: metricbeat-config
         configMap:
           defaultMode: 0600
-          name: metricbeat-central-metricbeat-deployment-config
+          name: central-metricbeat-deployment-config
       containers:
       - name: "metricbeat"
         image: "docker.elastic.co/beats/metricbeat-oss:7.10.1"
@@ -83,7 +83,7 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: KUBE_STATE_METRICS_HOSTS
-          value: "$(METRICBEAT_CENTRAL_KUBE_STATE_METRICS_SERVICE_HOST):$(METRICBEAT_CENTRAL_KUBE_STATE_METRICS_SERVICE_PORT_HTTP)"
+          value: "$(CENTRAL_KUBE_STATE_METRICS_SERVICE_HOST):$(CENTRAL_KUBE_STATE_METRICS_SERVICE_PORT_HTTP)"
         envFrom: 
           []
         securityContext: 

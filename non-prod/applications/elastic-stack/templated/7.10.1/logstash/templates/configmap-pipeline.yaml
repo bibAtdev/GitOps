@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: logstash-central-logstash-pipeline
+  name: central-logstash-pipeline
   labels:
-    app: "logstash-central-logstash"
+    app: "central-logstash"
     chart: "logstash"
     heritage: "Helm"
-    release: "logstash-central"
+    release: "central"
 data:
   uptime.conf: |
     input { exec { command => "uptime" interval => 30 } }

@@ -3,30 +3,30 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: metricbeat-central-metricbeat
+  name: central-metricbeat
   labels:
-    app: "metricbeat-central-metricbeat"
+    app: "central-metricbeat"
     chart: "metricbeat-7.10.1"
     heritage: "Helm"
-    release: "metricbeat-central"
+    release: "central"
 spec:
   selector:
     matchLabels:
-      app: "metricbeat-central-metricbeat"
-      release: "metricbeat-central"
+      app: "central-metricbeat"
+      release: "central"
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       annotations:
         
-        configChecksum: b4b1671e5fff9eb9ed4775525fab9a83baca3589c5ee7f426c97e998749436a
-      name: "metricbeat-central-metricbeat"
+        configChecksum: 2a01772cfac87024f31bd14387c2b5dfb2c30c0ad3730c8b49583a48e52f08d
+      name: "central-metricbeat"
       labels:
-        app: "metricbeat-central-metricbeat"
+        app: "central-metricbeat"
         chart: "metricbeat-7.10.1"
         heritage: "Helm"
-        release: "metricbeat-central"
+        release: "central"
     spec:
       affinity: 
         {}
@@ -34,16 +34,16 @@ spec:
         {}
       tolerations: 
         []
-      serviceAccountName: metricbeat-central-metricbeat
+      serviceAccountName: central-metricbeat
       terminationGracePeriodSeconds: 30
       volumes:
       - name: metricbeat-config
         configMap:
           defaultMode: 0600
-          name: metricbeat-central-metricbeat-daemonset-config
+          name: central-metricbeat-daemonset-config
       - name: data
         hostPath:
-          path: /var/lib/metricbeat-central-metricbeat-none-data
+          path: /var/lib/central-metricbeat-none-data
           type: DirectoryOrCreate
       - name: varrundockersock
         hostPath:

@@ -3,11 +3,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: metricbeat-central-kube-state-metrics
+  name: central-kube-state-metrics
   labels:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: "kube-state-metrics-2.4.1"
-    app.kubernetes.io/instance: "metricbeat-central"
+    app.kubernetes.io/instance: "central"
     app.kubernetes.io/managed-by: "Helm"
 spec:
   selector:
@@ -18,10 +18,10 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: kube-state-metrics
-        app.kubernetes.io/instance: "metricbeat-central"
+        app.kubernetes.io/instance: "central"
     spec:
       hostNetwork: false
-      serviceAccountName: metricbeat-central-kube-state-metrics
+      serviceAccountName: central-kube-state-metrics
       securityContext:
         fsGroup: 65534
         runAsUser: 65534

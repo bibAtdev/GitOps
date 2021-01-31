@@ -3,14 +3,14 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: "logstash-central-logstash-pdb"
+  name: "central-logstash-pdb"
   labels:
-    app: "logstash-central-logstash"
+    app: "central-logstash"
     chart: "logstash"
     heritage: "Helm"
-    release: "logstash-central"
+    release: "central"
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app: "logstash-central-logstash"
+      app: "central-logstash"

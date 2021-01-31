@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: filebeat-central-filebeat-config
+  name: central-filebeat-config
   labels:
-    app: "filebeat-central-filebeat"
+    app: "central-filebeat"
     chart: "filebeat-7.10.1"
     heritage: "Helm"
-    release: "filebeat-central"
+    release: "central"
 data:
   filebeat.yml: |
     filebeat.inputs:

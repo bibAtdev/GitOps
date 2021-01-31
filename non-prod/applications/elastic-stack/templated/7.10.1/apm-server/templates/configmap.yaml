@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: apm-server-central-apm-server-config
+  name: central-apm-server-config
   labels:
-    app: "apm-server-central-apm-server"
+    app: "central-apm-server"
     chart: "apm-server-7.10.1"
     heritage: "Helm"
-    release: "apm-server-central"
+    release: "central"
 data:
   apm-server.yml: |
     apm-server:

@@ -3,10 +3,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kibana-central-kibana
+  name: central-kibana
   labels: 
     app: kibana
-    release: "kibana-central"
+    release: "central"
     heritage: Helm
 spec:
   replicas: 1
@@ -15,12 +15,12 @@ spec:
   selector:
     matchLabels:
       app: kibana
-      release: "kibana-central"
+      release: "central"
   template:
     metadata:
       labels:
         app: kibana
-        release: "kibana-central"
+        release: "central"
       annotations:
         
     spec:

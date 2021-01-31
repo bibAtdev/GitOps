@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: logstash-central-logstash-config
+  name: central-logstash-config
   labels:
-    app: "logstash-central-logstash"
+    app: "central-logstash"
     chart: "logstash"
     heritage: "Helm"
-    release: "logstash-central"
+    release: "central"
 data:
   logstash.yml: |
     http.host: 0.0.0.0

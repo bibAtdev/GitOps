@@ -3,16 +3,16 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: "logstash-central-logstash-headless"
+  name: "central-logstash-headless"
   labels:
-    app: "logstash-central-logstash"
+    app: "central-logstash"
     chart: "logstash"
     heritage: "Helm"
-    release: "logstash-central"
+    release: "central"
 spec:
   clusterIP: None
   selector:
-    app: "logstash-central-logstash"
+    app: "central-logstash"
   ports:
     - name: http
       port: 9600
