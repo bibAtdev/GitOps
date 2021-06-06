@@ -1,0 +1,5 @@
+# Ref.: https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.4.4/components.yaml
+# Required for basic and custom Kubernetes cluster metrics
+
+resources:
+- components.yaml
