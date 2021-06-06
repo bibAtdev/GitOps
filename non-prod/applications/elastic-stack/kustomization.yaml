@@ -22,7 +22,7 @@
 resources:
 - apm-server
 - elasticsearch
-#- filebeat
+- filebeat
 - kibana
 - logstash
-#- metricbeat
+- metricbeat
