@@ -3,7 +3,7 @@
 
 # <artifact name>:
 # - apm-server
-# - elasticsearch
+# - elasticsearch (for master and worker)
 # - filebeat
 # - kibana
 # - logstash
@@ -13,7 +13,6 @@
 # helm pull elastic/<artifact name> --version 7.10.1 --untar --untardir ./helm/7.10.1/
 # Adjust the ./helm/7.10.1/helm-<artifact name>-values.yaml
 # helm template --name-template=central --namespace none  --values ./helm/7.10.1/helm-<artifact name>-values.yaml --output-dir ./templated/7.10.1/ ./helm/7.10.1/<artifact name>/
-
 
 # Ref.: https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
 # Ref.: https://helm.sh/docs/chart_best_practices/

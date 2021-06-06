@@ -18,15 +18,14 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - node1
           - k8s-worker-1
           - k8s-worker-2
           - k8s-worker-3
 
 ## ToDo: Automated dir creation
 #
-# mkdir -p /mnt/disk/kubernetes/vol
-# chcon -Rt svirt_sandbox_file_t /mnt/disk/kubernetes/vol
-# chmod 777 /mnt/disk/kubernetes/vol
+# sudo mkdir -p /mnt/disk/kubernetes/vol
+# sudo chcon -Rt svirt_sandbox_file_t /mnt/disk/kubernetes/vol
+# sudo chmod 777 /mnt/disk/kubernetes/vol
 #
 

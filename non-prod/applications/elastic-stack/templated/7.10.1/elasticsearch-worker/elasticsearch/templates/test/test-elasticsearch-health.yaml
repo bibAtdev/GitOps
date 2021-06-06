@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "central-xhyrl-test"
+  name: "central-ibwda-test"
   annotations:
     "helm.sh/hook": test
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -12,7 +12,7 @@ spec:
     fsGroup: 1000
     runAsUser: 1000
   containers:
-  - name: "central-dhghf-test"
+  - name: "central-rjeog-test"
     image: "docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.1"
     imagePullPolicy: "IfNotPresent"
     command:
