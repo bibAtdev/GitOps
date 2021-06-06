@@ -4,6 +4,7 @@ namespace: monitoring-system
 resources:
 - ./namespace.yaml
 - ./elastic-stack
+- ./kube-state-metrics
 
 bases:
 - ../../base/secrets
