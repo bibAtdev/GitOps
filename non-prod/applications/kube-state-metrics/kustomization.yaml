@@ -4,15 +4,15 @@
 # helm search repo prometheus-community/kube-state-metrics --versions
 # helm pull prometheus-community/kube-state-metrics --version 3.1.1 --untar --untardir ./helm/2.0.0/
 # Adjust the ./helm/2.0.0/helm-kube-state-metrics-values.yaml
-# helm template --name-template=central --namespace none  --values ./helm/2.0.0/helm-kube-state-metrics-values.yaml --output-dir ./templated/2.0.0/kube-state-metrics ./helm/2.0.0/kube-state-metrics
+# helm template --name-template=central --namespace none  --values ./helm-kube-state-metrics-values.yaml --output-dir ./templated/2.0.0 ./helm/2.0.0/kube-state-metrics
 
 # Ref.: https://github.com/kubernetes/kube-state-metrics#helm-chart
 # Ref.: https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-state-metrics
 
 
 resources:
-- ./templated/2.0.0/kube-state-metrics\kube-state-metrics/templates/serviceaccount.yaml
-- ./templated/2.0.0/kube-state-metrics\kube-state-metrics/templates/role.yaml
-- ./templated/2.0.0/kube-state-metrics\kube-state-metrics/templates/clusterrolebinding.yaml
-- ./templated/2.0.0/kube-state-metrics\kube-state-metrics/templates/service.yaml
-- ./templated/2.0.0/kube-state-metrics\kube-state-metrics/templates/deployment.yaml
+- ./templated/2.0.0/kube-state-metrics/templates/serviceaccount.yaml
+- ./templated/2.0.0/kube-state-metrics/templates/role.yaml
+- ./templated/2.0.0/kube-state-metrics/templates/clusterrolebinding.yaml
+- ./templated/2.0.0/kube-state-metrics/templates/service.yaml
+- ./templated/2.0.0/kube-state-metrics/templates/deployment.yaml
