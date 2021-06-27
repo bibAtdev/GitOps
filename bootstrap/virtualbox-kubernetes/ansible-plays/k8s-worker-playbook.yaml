@@ -111,3 +111,6 @@
   handlers:
     - name: docker status
       service: name=docker state=started
+
+## ToDo: install CNI Plugin to enable container login via proxy
+## Ref.: https://docs.projectcalico.org/getting-started/kubernetes/hardway/install-cni-plugin
