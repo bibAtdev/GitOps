@@ -1,1 +1,0 @@
-sudo kubectl proxy --address='0.0.0.0' –port=8001 --www=/home/vagrant/minikube --www-prefix=/minikube/
