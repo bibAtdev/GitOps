@@ -3,7 +3,7 @@
 
 # helm search repo prometheus-community/kube-state-metrics --versions
 # helm pull prometheus-community/kube-state-metrics --version 3.1.1 --untar --untardir ./helm/2.0.0/
-# Adjust the ./helm/2.0.0/helm-kube-state-metrics-values.yaml
+# Adjust the ./helm-kube-state-metrics-values.yaml
 # helm template --name-template=central --namespace none  --values ./helm-kube-state-metrics-values.yaml --output-dir ./templated/2.0.0 ./helm/2.0.0/kube-state-metrics
 
 # Ref.: https://github.com/kubernetes/kube-state-metrics#helm-chart

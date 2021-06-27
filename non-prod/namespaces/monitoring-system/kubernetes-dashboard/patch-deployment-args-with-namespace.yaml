@@ -1,0 +1,5 @@
+# edgemicro deployment name
+- op: replace
+  path: /spec/template/spec/containers/0/args/0
+  value: --namespace=monitoring-system
+  

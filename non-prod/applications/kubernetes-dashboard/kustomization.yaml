@@ -1,0 +1,32 @@
+# helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+# helm repo update
+# helm search repo kubernetes-dashboard/kubernetes-dashboard --versions
+# helm pull kubernetes-dashboard/kubernetes-dashboard --version 4.2.0 --untar --untardir ./helm/2.2.0/
+# Adjust the ./kubernetes-dashboard-values.yaml
+# helm template --name-template=kubernetes-dashboard --namespace none  --values ./kubernetes-dashboard-values.yaml --output-dir ./templated/2.2.0 ./helm/2.2.0/kubernetes-dashboard/
+
+# Ref.: https://github.com/kubernetes/dashboard
+# Ref.: https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard
+
+resources:
+- templated/2.2.0/kubernetes-dashboard/templates/clusterrolebinding-metrics.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/clusterrolebinding-readonly.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/clusterrole-metrics.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/clusterrole-readonly.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/configmap.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/deployment.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/ingress.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/networkpolicy.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/pdb.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/psp.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/role.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/rolebinding.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/secret.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/service.yaml
+- templated/2.2.0/kubernetes-dashboard/templates/serviceaccount.yaml
+
+
+#patches:
+#- target:
+#    kind: Deployment
+#  path: ../../base/patch-image-pull-secret.json

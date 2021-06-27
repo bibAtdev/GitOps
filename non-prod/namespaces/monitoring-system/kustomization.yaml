@@ -5,6 +5,7 @@ resources:
 - ./namespace.yaml
 - ./elastic-stack
 - ./kube-state-metrics
+- ./kubernetes-dashboard
 
 bases:
 - ../../base/secrets

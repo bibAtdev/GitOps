@@ -1,0 +1,13 @@
+resources:
+- ../../../applications/kubernetes-dashboard
+
+patches:
+    - target:
+        kind: RoleBinding
+      path: ./patch-subject-namespace.yaml
+    - target:
+        kind: ClusterRoleBinding
+      path: ./patch-subject-namespace.yaml
+    - target:
+        kind: Deployment
+      path: ./patch-deployment-args-with-namespace.yaml

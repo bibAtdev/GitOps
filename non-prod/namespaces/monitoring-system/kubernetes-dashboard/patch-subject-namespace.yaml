@@ -1,0 +1,5 @@
+# edgemicro deployment name
+- op: replace
+  path: /subjects/0/namespace
+  value: monitoring-system
+ 
