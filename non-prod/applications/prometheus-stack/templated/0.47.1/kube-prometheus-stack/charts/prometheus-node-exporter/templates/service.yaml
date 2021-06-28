@@ -1,0 +1,25 @@
+---
+# Source: kube-prometheus-stack/charts/prometheus-node-exporter/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-stack-prometheus-node-exporter
+  namespace: monitoring-system
+  annotations:
+    prometheus.io/scrape: "true"
+  labels:     
+    app: prometheus-node-exporter
+    heritage: Helm
+    release: prometheus-stack
+    chart: prometheus-node-exporter-1.18.0
+    jobLabel: node-exporter
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9100
+      targetPort: 9100
+      protocol: TCP
+      name: metrics
+  selector:
+    app: prometheus-node-exporter
+    release: prometheus-stack

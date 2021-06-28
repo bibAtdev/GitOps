@@ -1,0 +1,24 @@
+---
+# Source: kube-prometheus-stack/templates/prometheus-operator/psp-clusterrolebinding.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: prometheus-stack-kube-prom-operator-psp
+  labels:
+    app: kube-prometheus-stack-operator
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: prometheus-stack
+    app.kubernetes.io/version: "16.0.1"
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    chart: kube-prometheus-stack-16.0.1
+    release: "prometheus-stack"
+    heritage: "Helm"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-stack-kube-prom-operator-psp
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-stack-kube-prom-operator
+    namespace: monitoring-system

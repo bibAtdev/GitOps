@@ -1,0 +1,65 @@
+---
+# Source: kube-prometheus-stack/templates/prometheus/prometheus.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus-stack-kube-prom-prometheus
+  namespace: monitoring-system
+  labels:
+    app: kube-prometheus-stack-prometheus
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: prometheus-stack
+    app.kubernetes.io/version: "16.0.1"
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    chart: kube-prometheus-stack-16.0.1
+    release: "prometheus-stack"
+    heritage: "Helm"
+spec:
+  alerting:
+    alertmanagers:
+      - namespace: monitoring-system
+        name: prometheus-stack-kube-prom-alertmanager
+        port: web
+        pathPrefix: "/"
+        apiVersion: v2
+  image: quay.io/prometheus/prometheus:v2.26.0
+  version: v2.26.0
+  externalUrl: http://prometheus-stack-kube-prom-prometheus.monitoring-system:9090
+  paused: false
+  replicas: 1
+  shards: 1
+  logLevel:  info
+  logFormat:  logfmt
+  listenLocal: false
+  enableAdminAPI: false
+  retention: "10d"
+  routePrefix: "/"
+  serviceAccountName: prometheus-stack-kube-prom-prometheus
+  serviceMonitorSelector:
+    matchLabels:
+      release: "prometheus-stack"
+
+  serviceMonitorNamespaceSelector: {}
+  podMonitorSelector:
+    matchLabels:
+      release: "prometheus-stack"
+
+  podMonitorNamespaceSelector: {}
+  probeSelector:
+    matchLabels:
+      release: "prometheus-stack"
+
+  probeNamespaceSelector: {}
+  securityContext:
+    fsGroup: 2000
+    runAsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  ruleNamespaceSelector: {}
+  ruleSelector:
+    matchLabels:
+      app: kube-prometheus-stack
+      release: "prometheus-stack"
+
+  portName: web

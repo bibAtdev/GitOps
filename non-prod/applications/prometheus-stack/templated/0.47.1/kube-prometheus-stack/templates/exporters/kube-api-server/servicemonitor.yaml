@@ -1,0 +1,34 @@
+---
+# Source: kube-prometheus-stack/templates/exporters/kube-api-server/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-stack-kube-prom-apiserver
+  namespace: monitoring-system
+  labels:
+    app: kube-prometheus-stack-apiserver
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: prometheus-stack
+    app.kubernetes.io/version: "16.0.1"
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    chart: kube-prometheus-stack-16.0.1
+    release: "prometheus-stack"
+    heritage: "Helm"
+spec:
+  endpoints:
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    port: https
+    scheme: https
+    tlsConfig:
+      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      serverName: kubernetes
+      insecureSkipVerify: false
+  jobLabel: component
+  namespaceSelector:
+    matchNames:
+    - default
+  selector:
+    matchLabels:
+      component: apiserver
+      provider: kubernetes

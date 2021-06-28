@@ -1,0 +1,25 @@
+---
+# Source: kube-prometheus-stack/templates/alertmanager/psp-rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: prometheus-stack-kube-prom-alertmanager
+  namespace: monitoring-system
+  labels:
+    app: kube-prometheus-stack-alertmanager
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: prometheus-stack
+    app.kubernetes.io/version: "16.0.1"
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    chart: kube-prometheus-stack-16.0.1
+    release: "prometheus-stack"
+    heritage: "Helm"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prometheus-stack-kube-prom-alertmanager
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-stack-kube-prom-alertmanager
+    namespace: monitoring-system

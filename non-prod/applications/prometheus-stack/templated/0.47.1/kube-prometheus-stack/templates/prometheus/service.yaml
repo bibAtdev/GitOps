@@ -1,0 +1,27 @@
+---
+# Source: kube-prometheus-stack/templates/prometheus/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-stack-kube-prom-prometheus
+  namespace: monitoring-system
+  labels:
+    app: kube-prometheus-stack-prometheus
+    self-monitor: "true"
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: prometheus-stack
+    app.kubernetes.io/version: "16.0.1"
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    chart: kube-prometheus-stack-16.0.1
+    release: "prometheus-stack"
+    heritage: "Helm"
+spec:
+  ports:
+  - name: web
+    port: 9090
+    targetPort: 9090
+  selector:
+    app: prometheus
+    prometheus: prometheus-stack-kube-prom-prometheus
+  type: "ClusterIP"

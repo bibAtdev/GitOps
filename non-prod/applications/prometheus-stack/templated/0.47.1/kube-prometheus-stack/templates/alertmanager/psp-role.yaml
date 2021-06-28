@@ -1,0 +1,23 @@
+---
+# Source: kube-prometheus-stack/templates/alertmanager/psp-role.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: prometheus-stack-kube-prom-alertmanager
+  namespace: monitoring-system
+  labels:
+    app: kube-prometheus-stack-alertmanager
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: prometheus-stack
+    app.kubernetes.io/version: "16.0.1"
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    chart: kube-prometheus-stack-16.0.1
+    release: "prometheus-stack"
+    heritage: "Helm"
+rules:
+- apiGroups: ['policy']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resourceNames:
+  - prometheus-stack-kube-prom-alertmanager

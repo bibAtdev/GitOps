@@ -1,0 +1,74 @@
+---
+# Source: kube-prometheus-stack/templates/prometheus-operator/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-stack-kube-prom-operator
+  namespace: monitoring-system
+  labels:
+    app: kube-prometheus-stack-operator
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: prometheus-stack
+    app.kubernetes.io/version: "16.0.1"
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    chart: kube-prometheus-stack-16.0.1
+    release: "prometheus-stack"
+    heritage: "Helm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-prometheus-stack-operator
+      release: "prometheus-stack"
+  template:
+    metadata:
+      labels:
+        app: kube-prometheus-stack-operator
+        
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/instance: prometheus-stack
+        app.kubernetes.io/version: "16.0.1"
+        app.kubernetes.io/part-of: kube-prometheus-stack
+        chart: kube-prometheus-stack-16.0.1
+        release: "prometheus-stack"
+        heritage: "Helm"
+    spec:
+      containers:
+        - name: kube-prometheus-stack
+          image: "quay.io/prometheus-operator/prometheus-operator:v0.47.1"
+          imagePullPolicy: "Always"
+          args:
+            - --kubelet-service=kube-system/prometheus-stack-kube-prom-kubelet
+            - --localhost=127.0.0.1
+            - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.47.1
+            - --config-reloader-cpu=100m
+            - --config-reloader-memory=50Mi
+            - --web.enable-tls=true
+            - --web.cert-file=/cert/cert
+            - --web.key-file=/cert/key
+            - --web.listen-address=:10250
+            - --web.tls-min-version=VersionTLS13
+          ports:
+            - containerPort: 10250
+              name: https
+          resources:
+            {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: tls-secret
+              mountPath: /cert
+              readOnly: true
+      volumes:
+        - name: tls-secret
+          secret:
+            defaultMode: 420
+            secretName: prometheus-stack-kube-prom-admission
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccountName: prometheus-stack-kube-prom-operator

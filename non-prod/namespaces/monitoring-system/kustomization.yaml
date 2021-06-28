@@ -4,8 +4,10 @@ namespace: monitoring-system
 resources:
 - ./namespace.yaml
 - ./elastic-stack
-- ./kube-state-metrics
 - ./kubernetes-dashboard
+- ./kube-state-metrics
+- ./prometheus-stack
+
 
 bases:
 - ../../base/secrets

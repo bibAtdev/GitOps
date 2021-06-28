@@ -1,0 +1,111 @@
+# helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+# helm repo update
+# helm search repo prometheus-community/kube-prometheus-stack --versions
+# helm pull prometheus-community/kube-prometheus-stack --version 16.0.1 --untar --untardir ./helm/0.47.1/
+# Adjust the ./prometheus-values.yaml
+# helm template --name-template=prometheus-stack --namespace monitoring-system  --values ./prometheus-values.yaml --output-dir ./templated/0.47.1 ./helm/0.47.1/kube-prometheus-stack/
+
+# Ref.: https://github.com/prometheus-community/prometheus
+# Ref.: https://github.com/prometheus-community/helm-charts
+
+## ToDo: make chart namespace independend via patches
+
+resources:
+## Custom Resource Definitions
+## WARNING: Have to be copied manually from helm folder
+- templated/0.47.1/kube-prometheus-stack/crds/crd-alertmanagerconfigs.yaml
+- templated/0.47.1/kube-prometheus-stack/crds/crd-alertmanagers.yaml
+- templated/0.47.1/kube-prometheus-stack/crds/crd-podmonitors.yaml
+- templated/0.47.1/kube-prometheus-stack/crds/crd-probes.yaml
+- templated/0.47.1/kube-prometheus-stack/crds/crd-prometheuses.yaml
+- templated/0.47.1/kube-prometheus-stack/crds/crd-prometheusrules.yaml
+- templated/0.47.1/kube-prometheus-stack/crds/crd-servicemonitors.yaml
+- templated/0.47.1/kube-prometheus-stack/crds/crd-thanosrulers.yaml
+
+## Application templates
+- templated/0.47.1/kube-prometheus-stack/charts/prometheus-node-exporter/templates/daemonset.yaml
+- templated/0.47.1/kube-prometheus-stack/charts/prometheus-node-exporter/templates/psp-clusterrole.yaml
+- templated/0.47.1/kube-prometheus-stack/charts/prometheus-node-exporter/templates/psp-clusterrolebinding.yaml
+- templated/0.47.1/kube-prometheus-stack/charts/prometheus-node-exporter/templates/psp.yaml
+- templated/0.47.1/kube-prometheus-stack/charts/prometheus-node-exporter/templates/service.yaml
+- templated/0.47.1/kube-prometheus-stack/charts/prometheus-node-exporter/templates/serviceaccount.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/alertmanager/alertmanager.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/alertmanager/psp-role.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/alertmanager/psp-rolebinding.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/alertmanager/psp.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/alertmanager/secret.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/alertmanager/service.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/alertmanager/serviceaccount.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/alertmanager/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/core-dns/service.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/core-dns/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kube-api-server/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kube-controller-manager/service.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kube-controller-manager/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kube-etcd/service.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kube-etcd/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kube-proxy/service.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kube-proxy/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kube-scheduler/service.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kube-scheduler/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/kubelet/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/exporters/node-exporter/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/job-patch/clusterrole.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/job-patch/clusterrolebinding.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/job-patch/job-createSecret.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/job-patch/job-patchWebhook.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/job-patch/psp.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/job-patch/role.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/job-patch/rolebinding.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/job-patch/serviceaccount.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/mutatingWebhookConfiguration.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/validatingWebhookConfiguration.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/clusterrole.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/clusterrolebinding.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/deployment.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/psp-clusterrole.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/psp-clusterrolebinding.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/psp.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/service.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/serviceaccount.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus-operator/servicemonitor.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/clusterrole.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/clusterrolebinding.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/prometheus.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/psp-clusterrole.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/psp-clusterrolebinding.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/psp.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/alertmanager.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/etcd.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/general.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/k8s.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kube-apiserver-availability.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kube-apiserver-slos.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kube-apiserver.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kube-prometheus-general.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kube-prometheus-node-recording.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kube-scheduler.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kube-state-metrics.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kubelet.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-apps.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-resources.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-storage.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-system-apiserver.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-system-controller-manager.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-system-kubelet.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-system-scheduler.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-system.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/node-exporter.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/node-exporter.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/node-network.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/node.rules.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/prometheus-operator.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/rules-1.14/prometheus.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/service.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/serviceaccount.yaml
+- templated/0.47.1/kube-prometheus-stack/templates/prometheus/servicemonitor.yaml
+
+#patches:
+#- target:
+#    kind: Deployment
+#  path: ../../base/patch-image-pull-secret.json
