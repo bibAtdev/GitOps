@@ -1,0 +1,50 @@
+---
+# Source: jaeger-operator/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-stack-jaeger-operator
+  namespace: none
+  labels:
+    
+    app.kubernetes.io/name: jaeger-operator
+    app.kubernetes.io/instance: jaeger-stack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      
+      app.kubernetes.io/name: jaeger-operator
+      app.kubernetes.io/instance: jaeger-stack
+  template:
+    metadata:
+      name: jaeger-stack-jaeger-operator
+      labels:
+        
+        app.kubernetes.io/name: jaeger-operator
+        app.kubernetes.io/instance: jaeger-stack
+    spec:
+      serviceAccountName: jaeger-stack-jaeger-operator
+      containers:
+        - name: jaeger-stack-jaeger-operator
+          image: "jaegertracing/jaeger-operator:1.22.1"
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8383
+            name: metrics
+          args: ["start"]
+          env:
+            - name: WATCH_NAMESPACE
+              value: ""
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: OPERATOR_NAME
+              value: "jaeger-stack-jaeger-operator"
+          resources:
+            {}
