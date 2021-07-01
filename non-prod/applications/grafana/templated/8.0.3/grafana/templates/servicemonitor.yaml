@@ -1,0 +1,28 @@
+---
+# Source: grafana/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: grafana
+  labels:
+    helm.sh/chart: grafana-6.13.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: grafana
+    app.kubernetes.io/version: "8.0.3"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  endpoints:
+  - interval: 1m
+    scrapeTimeout: 30s
+    honorLabels: true
+    port: service
+    path: /metrics
+    scheme: http
+  jobLabel: "grafana"
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/instance: grafana
+  namespaceSelector:
+    matchNames:
+      - none

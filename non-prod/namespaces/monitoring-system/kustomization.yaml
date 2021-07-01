@@ -4,6 +4,7 @@ namespace: monitoring-system
 resources:
 - ./namespace.yaml
 - ./elastic-stack
+- ./grafana
 - ./jaeger
 - ./kubernetes-dashboard
 - ./kube-state-metrics

@@ -1,0 +1,36 @@
+# helm repo add grafana https://grafana.github.io/helm-charts
+# helm repo update
+# helm search repo grafana/grafana --versions
+# helm pull grafana/grafana --version 6.13.6 --untar --untardir ./helm/8.0.3/
+# Adjust the ./grafana-values.yaml
+# helm template --name-template=grafana --namespace none  --values ./grafana-values.yaml --output-dir ./templated/8.0.3 ./helm/8.0.3/grafana/
+
+# Ref.: https://github.com/grafana/grafana
+# Ref.: https://github.com/grafana/helm-charts
+
+resources:
+- templated/8.0.3/grafana/templates/clusterrole.yaml
+- templated/8.0.3/grafana/templates/clusterrolebinding.yaml
+- templated/8.0.3/grafana/templates/configmap.yaml
+- templated/8.0.3/grafana/templates/deployment.yaml
+- templated/8.0.3/grafana/templates/hpa.yaml
+- templated/8.0.3/grafana/templates/ingress.yaml
+- templated/8.0.3/grafana/templates/podsecuritypolicy.yaml
+- templated/8.0.3/grafana/templates/role.yaml
+- templated/8.0.3/grafana/templates/rolebinding.yaml
+- templated/8.0.3/grafana/templates/secret.yaml
+- templated/8.0.3/grafana/templates/service.yaml
+- templated/8.0.3/grafana/templates/serviceaccount.yaml
+- templated/8.0.3/grafana/templates/servicemonitor.yaml
+- templated/8.0.3/grafana/templates/tests/test-configmap.yaml
+- templated/8.0.3/grafana/templates/tests/test-podsecuritypolicy.yaml
+- templated/8.0.3/grafana/templates/tests/test-role.yaml
+- templated/8.0.3/grafana/templates/tests/test-rolebinding.yaml
+- templated/8.0.3/grafana/templates/tests/test-serviceaccount.yaml
+- templated/8.0.3/grafana/templates/tests/test.yaml
+
+
+#patches:
+#- target:
+#    kind: Deployment
+#  path: ../../base/patch-image-pull-secret.json

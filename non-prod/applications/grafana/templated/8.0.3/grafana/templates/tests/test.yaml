@@ -1,0 +1,31 @@
+---
+# Source: grafana/templates/tests/test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grafana-test
+  labels:
+    helm.sh/chart: grafana-6.13.6
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: grafana
+    app.kubernetes.io/version: "8.0.3"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+  namespace: none
+spec:
+  serviceAccountName: grafana-test
+  containers:
+    - name: grafana-test
+      image: "bats/bats:v1.1.0"
+      imagePullPolicy: "Always"
+      command: ["/opt/bats/bin/bats", "-t", "/tests/run.sh"]
+      volumeMounts:
+        - mountPath: /tests
+          name: tests
+          readOnly: true
+  volumes:
+  - name: tests
+    configMap:
+      name: grafana-test
+  restartPolicy: Never
