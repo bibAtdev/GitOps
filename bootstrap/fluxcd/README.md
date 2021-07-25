@@ -47,6 +47,7 @@ TF_VAR_github_owner=YourGitHubUser
 TF_VAR_github_token=YourGitHubToken
 ```
 > The Github token should contain create, write, read, and delete rights
+> Specail caracters can be escaped with `^`
 
 4. Execute the `install.bat`, which is available within this directory.
 
@@ -67,11 +68,11 @@ source-controller-5bdb7bdfc9-ctlpp         1/1     Running   0          2m
 | Component | Version  |
 |--|--|
 | Docker |  19.03.13|
-| Kubernetes | 1.19.6 |
-| kubectl | 1.20.1 |
-| Terraform| 0.14.3 |
-| Terraform Provider Flux| 0.0.8 |
-| Windows | Windows 10 Build 19041.685 |
+| Kubernetes | 1.19.13 |
+| kubectl | 1.21.2 |
+| Terraform| 1.0.1 |
+| Terraform Provider Flux| 0.0.13 |
+| Windows | Windows 10 Build 19043.1110 |
 
 
 

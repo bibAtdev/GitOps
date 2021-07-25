@@ -129,9 +129,10 @@
 
 ## Setup the container networking provider and the network policy engine	 
 ## Ref.: https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises
+## Ref.: https://docs.projectcalico.org/getting-started/kubernetes/hardway/install-cni-plugin
   - name: Install calico pod network
     become: false
-    command: kubectl create -f https://docs.projectcalico.org/v3.17/manifests/calico.yaml
+    command: kubectl create -f https://docs.projectcalico.org/v3.19/manifests/calico.yaml
 
 ## Generate kube join command for joining the node to the Kubernetes cluster and store the command
   - name: Generate join command
@@ -145,6 +146,3 @@
   handlers:
     - name: docker status
       service: name=docker state=started
-      
-## ToDo: install CNI Plugin to enable container login via proxy
-## Ref.: https://docs.projectcalico.org/getting-started/kubernetes/hardway/install-cni-plugin

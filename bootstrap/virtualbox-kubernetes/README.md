@@ -63,13 +63,13 @@ k8s-worker-1   Ready    <none>                 7m48s   v1.19.6
 | Ansible | 2.10.4 |
 | Calico| 3.17|
 | Docker |  19.03.13|
-| kubectl | v1.20.1 |
-| Kubernetes | v1.19.6 |
+| kubectl | v1.21.2 |
+| Kubernetes | v1.19.13 |
 | Python | 2.7.18 |
 | Ubunutu | 20.04 |
-| Vagrant | 2.2.14 |
+| Vagrant | 2.2.16 |
 | VirtualBox | 6.1.16 r140961 |
-| Windows | Windows 10 Build 19041.685 |
+| Windows | Windows 10 Build 19043.1110 |
 
 
 ## Known issues

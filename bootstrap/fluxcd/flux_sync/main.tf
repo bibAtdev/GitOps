@@ -1,23 +1,30 @@
+## Source: https://github.com/fluxcd/terraform-provider-flux/blob/main/examples/github/main.tf
+
 terraform {
   required_version = ">= 0.13"
 
   required_providers {
     github = {
-      source  = "hashicorp/github"
-      version = "= 4.1.0"
+      source = "integrations/github"
+      version = ">= 4.5.2"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "= 1.13.3"
+      version = ">= 2.0.2"
     }
     kubectl = {
       source  = "gavinbunney/kubectl"
-      version = "= 1.9.1"
+      version = ">= 1.10.0"
     }
     flux = {
       source  = "fluxcd/flux"
-      version = "= 0.0.9"
+      version = ">= 0.0.13"
     }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "3.1.0"
+    }
+
   }
 }
 
@@ -25,7 +32,10 @@ provider "flux" {}
 
 provider "kubectl" {}
 
-provider "kubernetes" {}
+provider "kubernetes" {
+  config_path = "~/Documents/GitHub/GitOps/bootstrap/virtualbox-kubernetes/.kube/config"
+  insecure = true
+}
 
 provider "github" {
   owner = var.github_owner
@@ -33,6 +43,10 @@ provider "github" {
 }
 
 # SSH
+locals {
+  known_hosts = "github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ=="
+}
+
 resource "tls_private_key" "main" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -50,15 +64,23 @@ data "flux_sync" "main" {
 }
 
 # Kubernetes
-resource "kubernetes_namespace" "flux_system" {
+## Decomment if resource does not already exist or should be managed by Terraform
+## Ref.: https://github.com/hashicorp/terraform/issues/23178
+#resource "kubernetes_namespace" "flux_system" {
+#  metadata {
+#    name = "flux-system"
+#  }
+#
+#  lifecycle {
+#    ignore_changes = [
+#      metadata[0].labels,
+#    ]
+#  }
+#}
+
+data "kubernetes_namespace" "flux_system" {
   metadata {
     name = "flux-system"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-    ]
   }
 }
 
@@ -66,33 +88,40 @@ data "kubectl_file_documents" "install" {
   content = data.flux_install.main.content
 }
 
-resource "kubectl_manifest" "install" {
-  for_each   = { for v in data.kubectl_file_documents.install.documents : sha1(v) => v }
-  depends_on = [kubernetes_namespace.flux_system]
-
-  yaml_body = each.value
-}
-
 data "kubectl_file_documents" "sync" {
   content = data.flux_sync.main.content
 }
 
-resource "kubectl_manifest" "sync" {
-  for_each   = { for v in data.kubectl_file_documents.sync.documents : sha1(v) => v }
-  depends_on = [kubectl_manifest.install, kubernetes_namespace.flux_system]
-
-  yaml_body = each.value
+locals {
+  install = [for v in data.kubectl_file_documents.install.documents : {
+    data : yamldecode(v)
+    content : v
+    }
+  ]
+  sync = [for v in data.kubectl_file_documents.sync.documents : {
+    data : yamldecode(v)
+    content : v
+    }
+  ]
 }
 
-locals {
-  known_hosts = "github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ=="
+resource "kubectl_manifest" "install" {
+  for_each   = { for v in local.install : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
+  depends_on = [data.kubernetes_namespace.flux_system]
+  yaml_body  = each.value
+}
+
+resource "kubectl_manifest" "sync" {
+  for_each   = { for v in local.sync : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
+  depends_on = [data.kubernetes_namespace.flux_system]
+  yaml_body  = each.value
 }
 
 resource "kubernetes_secret" "main" {
   depends_on = [kubectl_manifest.install]
 
   metadata {
-    name      = data.flux_sync.main.name
+    name      = data.flux_sync.main.secret
     namespace = data.flux_sync.main.namespace
   }
 
@@ -104,24 +133,20 @@ resource "kubernetes_secret" "main" {
 }
 
 # GitHub
-## https://stackoverflow.com/questions/57908294/optional-resources-in-terraform-0-12-module
+## Decomment if resource does not already exist or should be managed by Terraform
+## Ref.: https://github.com/hashicorp/terraform/issues/23178
 #resource "github_repository" "main" {
 #  name       = var.repository_name
 #  visibility = var.repository_visibility
 #  auto_init  = true
+#  has_issues = true
 #}
-
-#resource "github_branch_default" "main" {
-#  repository = github_repository.main.name
-#  branch     = var.branch
-#}
-
 
 data "github_repository" "main" {
-  name = var.repository_name
+  name       = var.repository_name
 }
 
-data "github_branch" "main" {
+resource "github_branch_default" "main" {
   repository = data.github_repository.main.name
   branch     = var.branch
 }
